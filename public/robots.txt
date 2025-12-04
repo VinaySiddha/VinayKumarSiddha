@@ -1,0 +1,14 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://vinaysiddha.dev/sitemap.xml
+
+# Crawl-delay for all bots
+Crawl-delay: 10
+
+# Disallow admin paths (if any)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/

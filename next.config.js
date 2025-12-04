@@ -6,6 +6,16 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: true,
+  
+  // Performance optimizations
+  experimental: {
+    optimizeCss: true,
+  },
 }
 
 module.exports = nextConfig
+
+
