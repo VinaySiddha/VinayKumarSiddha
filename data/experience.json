@@ -1,0 +1,70 @@
+{
+  "timeline": [
+    {
+      "id": 1,
+      "year": "2024",
+      "role": "Senior AI Engineer",
+      "company": "Tech Innovation Labs",
+      "description": "Leading production RAG systems and multi-agent AI architectures for enterprise solutions.",
+      "color": "#a78bfa",
+      "icon": "Crown",
+      "pathPosition": 10,
+      "side": "left"
+    },
+    {
+      "id": 2,
+      "year": "2023",
+      "role": "ML Engineer",
+      "company": "DataCorp Solutions",
+      "description": "Built fine-tuned LLMs with custom training pipelines serving millions of requests.",
+      "color": "#c084fc",
+      "icon": "Rocket",
+      "pathPosition": 25,
+      "side": "right"
+    },
+    {
+      "id": 3,
+      "year": "2022",
+      "role": "Full Stack Developer",
+      "company": "WebTech Studios",
+      "description": "Developed scalable web apps with Django, React, and PostgreSQL.",
+      "color": "#f472b6",
+      "icon": "Target",
+      "pathPosition": 42,
+      "side": "left"
+    },
+    {
+      "id": 4,
+      "year": "2021",
+      "role": "Backend Developer",
+      "company": "CloudSoft Inc",
+      "description": "Created microservices architecture with Node.js and MongoDB.",
+      "color": "#fb923c",
+      "icon": "Zap",
+      "pathPosition": 60,
+      "side": "right"
+    },
+    {
+      "id": 5,
+      "year": "2020",
+      "role": "Junior Developer",
+      "company": "StartupHub",
+      "description": "Built RESTful APIs and database schemas for startup products.",
+      "color": "#fbbf24",
+      "icon": "Sparkles",
+      "pathPosition": 78,
+      "side": "left"
+    },
+    {
+      "id": 6,
+      "year": "2019",
+      "role": "Software Intern",
+      "company": "TechCorp",
+      "description": "Contributed to automation tools and learned industry best practices.",
+      "color": "#34d399",
+      "icon": "Star",
+      "pathPosition": 92,
+      "side": "right"
+    }
+  ]
+}

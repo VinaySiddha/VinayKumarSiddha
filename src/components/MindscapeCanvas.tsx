@@ -4,21 +4,23 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Brain, Zap, Heart, Code2, Rocket, Users, Target, Sparkles, Lightbulb, Shield } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react'
+import creativeData from '../../data/creative.json'
 
 interface ThoughtBubble {
   id: number
   title: string
   description: string
-  icon: any
+  icon: string
   color: string
   x: number
   y: number
   size: number
-  streamColor: string
+  streamColor?: string
 }
 
-function FloatingThought({ bubble, index, scrollProgress, isMobile }: { bubble: ThoughtBubble; index: number; scrollProgress: any; isMobile: boolean }) {
+function FloatingThought({ bubble, index, scrollProgress, isMobile, iconMap }: { bubble: ThoughtBubble; index: number; scrollProgress: any; isMobile: boolean; iconMap: Record<string, any> }) {
   const [isHovered, setIsHovered] = useState(false)
+  const BubbleIcon = iconMap[bubble.icon]
   
   // Reduced parallax on mobile
   const yParallax = useTransform(scrollProgress, [0, 1], isMobile ? [0, bubble.y * -0.2] : [bubble.y * 0.5, bubble.y * -0.8])
@@ -114,7 +116,7 @@ function FloatingThought({ bubble, index, scrollProgress, isMobile }: { bubble: 
           />
 
           {/* Icon */}
-          <bubble.icon
+          <BubbleIcon
             className="w-12 h-12 relative z-10"
             style={{ color: bubble.color }}
           />
@@ -304,107 +306,31 @@ export default function MindscapeCanvas() {
     offset: ['start end', 'end start'],
   })
 
-  const bubbles: ThoughtBubble[] = [
-    {
-      id: 1,
-      title: 'ARCHITECT',
-      description: 'Designing scalable systems with precision and foresight, where every component serves a greater purpose.',
-      icon: Code2,
-      color: '#a78bfa',
-      x: 12,
-      y: 15,
-      size: 140,
-      streamColor: '#a78bfa',
-    },
-    {
-      id: 2,
-      title: 'INNOVATOR',
-      description: 'Exploring cutting-edge technologies and transforming ambitious ideas into groundbreaking solutions.',
-      icon: Lightbulb,
-      color: '#c084fc',
-      x: 75,
-      y: 10,
-      size: 130,
-      streamColor: '#c084fc',
-    },
-    {
-      id: 3,
-      title: 'STRATEGIST',
-      description: 'Converting complex challenges into clear roadmaps with measurable impact and long-term vision.',
-      icon: Target,
-      color: '#e879f9',
-      x: 8,
-      y: 45,
-      size: 120,
-      streamColor: '#e879f9',
-    },
-    {
-      id: 4,
-      title: 'VELOCITY',
-      description: 'Moving at speed without compromise, balancing rapid delivery with robust engineering excellence.',
-      icon: Zap,
-      color: '#f472b6',
-      x: 45,
-      y: 8,
-      size: 135,
-      streamColor: '#f472b6',
-    },
-    {
-      id: 5,
-      title: 'EMPATHY',
-      description: 'Building with deep understanding of human needs, creating technology that truly serves people.',
-      icon: Heart,
-      color: '#fb7185',
-      x: 82,
-      y: 48,
-      size: 125,
-      streamColor: '#fb7185',
-    },
-    {
-      id: 6,
-      title: 'INTELLIGENCE',
-      description: 'Harnessing AI and machine learning to create adaptive systems that evolve with user behavior.',
-      icon: Brain,
-      color: '#fb923c',
-      x: 18,
-      y: 75,
-      size: 128,
-      streamColor: '#fb923c',
-    },
-    {
-      id: 7,
-      title: 'LAUNCH',
-      description: 'Transforming concepts into production-ready products that create real-world measurable impact.',
-      icon: Rocket,
-      color: '#fbbf24',
-      x: 52,
-      y: 65,
-      size: 132,
-      streamColor: '#fbbf24',
-    },
-    {
-      id: 8,
-      title: 'CATALYST',
-      description: 'Empowering teams through mentorship and collaboration, amplifying collective potential.',
-      icon: Users,
-      color: '#4ade80',
-      x: 78,
-      y: 78,
-      size: 122,
-      streamColor: '#4ade80',
-    },
-    {
-      id: 9,
-      title: 'INTEGRITY',
-      description: 'Building with ethical consideration and transparency, honoring the trust placed in technology.',
-      icon: Shield,
-      color: '#22d3ee',
-      x: 42,
-      y: 40,
-      size: 138,
-      streamColor: '#22d3ee',
-    },
-  ]
+  // Icon mapping - maps string names to React components
+  const iconMap: Record<string, any> = {
+    Code2,
+    Lightbulb,
+    Target,
+    Zap,
+    Heart,
+    Brain,
+    Rocket,
+    Users,
+    Shield,
+  }
+
+  // Map JSON data to component-compatible format
+  const bubblesFromJSON: ThoughtBubble[] = creativeData.bubbles.map(bubble => ({
+    id: bubble.id,
+    title: bubble.title,
+    description: bubble.description,
+    icon: bubble.icon,
+    color: bubble.color,
+    x: bubble.x,
+    y: bubble.y,
+    size: bubble.size,
+    streamColor: bubble.color
+  }))
 
   const streams = [
     { from: { x: 15, y: 20 }, to: { x: 45, y: 15 }, color: '#a78bfa80', delay: 0.5 },
@@ -522,13 +448,14 @@ export default function MindscapeCanvas() {
           ))}
 
           {/* Thought bubbles */}
-          {bubbles.map((bubble, index) => (
+          {bubblesFromJSON.map((bubble, index) => (
             <FloatingThought
               key={bubble.id}
               bubble={bubble}
               index={index}
               scrollProgress={scrollYProgress}
               isMobile={isMobile}
+              iconMap={iconMap}
             />
           ))}
 

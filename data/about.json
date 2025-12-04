@@ -1,0 +1,22 @@
+{
+  "name": "Vinny",
+  "title": "AI Engineer & SDE",
+  "greeting": "Hello World! I'm",
+  "description": "Specializing in production-grade RAG systems, multi-agent workflows, and scalable AI architectures. From building intelligent chatbots to deploying enterprise LLM solutions, I turn complex AI challenges into elegant, performant applications.",
+  "highlights": [
+    "RAG Systems",
+    "Multi-Agent AI",
+    "LLM Fine-tuning",
+    "Cloud Architecture"
+  ],
+  "availability": {
+    "status": "Available for opportunities",
+    "isActive": true
+  },
+  "social": {
+    "github": "https://github.com/yourusername",
+    "linkedin": "https://linkedin.com/in/yourprofile",
+    "email": "your.email@example.com",
+    "resume": "/resume.pdf"
+  }
+}

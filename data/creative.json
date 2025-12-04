@@ -1,0 +1,99 @@
+{
+  "title": "Thoughts In Motion",
+  "subtitle": "Creative Identity Canvas",
+  "description": "An abstract canvas where ideas flow freely, connecting and evolving—each bubble represents a facet of my creative identity",
+  "instructionMobile": "Tap any bubble to discover more",
+  "instructionDesktop": "Hover over any bubble to discover more",
+  "bubbles": [
+    {
+      "id": 1,
+      "title": "ARCHITECT",
+      "description": "Designing scalable systems with precision and foresight, where every component serves a greater purpose.",
+      "icon": "Code2",
+      "color": "#a78bfa",
+      "x": 12,
+      "y": 15,
+      "size": 140
+    },
+    {
+      "id": 2,
+      "title": "INNOVATOR",
+      "description": "Exploring cutting-edge technologies and transforming ambitious ideas into groundbreaking solutions.",
+      "icon": "Lightbulb",
+      "color": "#c084fc",
+      "x": 75,
+      "y": 10,
+      "size": 130
+    },
+    {
+      "id": 3,
+      "title": "STRATEGIST",
+      "description": "Converting complex challenges into clear roadmaps with measurable impact and long-term vision.",
+      "icon": "Target",
+      "color": "#e879f9",
+      "x": 8,
+      "y": 45,
+      "size": 120
+    },
+    {
+      "id": 4,
+      "title": "VELOCITY",
+      "description": "Moving at speed without compromise, balancing rapid delivery with robust engineering excellence.",
+      "icon": "Zap",
+      "color": "#f472b6",
+      "x": 45,
+      "y": 8,
+      "size": 135
+    },
+    {
+      "id": 5,
+      "title": "EMPATHY",
+      "description": "Building with deep understanding of human needs, creating technology that truly serves people.",
+      "icon": "Heart",
+      "color": "#fb7185",
+      "x": 82,
+      "y": 48,
+      "size": 125
+    },
+    {
+      "id": 6,
+      "title": "INTELLIGENCE",
+      "description": "Harnessing AI and machine learning to create adaptive systems that evolve with user behavior.",
+      "icon": "Brain",
+      "color": "#fb923c",
+      "x": 18,
+      "y": 75,
+      "size": 128
+    },
+    {
+      "id": 7,
+      "title": "LAUNCH",
+      "description": "Transforming concepts into production-ready products that create real-world measurable impact.",
+      "icon": "Rocket",
+      "color": "#fbbf24",
+      "x": 52,
+      "y": 65,
+      "size": 132
+    },
+    {
+      "id": 8,
+      "title": "CATALYST",
+      "description": "Empowering teams through mentorship and collaboration, amplifying collective potential.",
+      "icon": "Users",
+      "color": "#4ade80",
+      "x": 78,
+      "y": 78,
+      "size": 122
+    },
+    {
+      "id": 9,
+      "title": "INTEGRITY",
+      "description": "Building with ethical consideration and transparency, honoring the trust placed in technology.",
+      "icon": "Shield",
+      "color": "#34d399",
+      "x": 42,
+      "y": 88,
+      "size": 118
+    }
+  ]
+}

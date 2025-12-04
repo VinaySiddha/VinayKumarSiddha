@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Rocket, Sparkles, Target, Zap, Crown, Star } from 'lucide-react'
 import { useRef, useState } from 'react'
+import experienceData from '../../data/experience.json'
 
 interface Milestone {
   year: string
@@ -11,13 +12,14 @@ interface Milestone {
   company: string
   description: string
   color: string
-  icon: any
+  icon: string
   pathPosition: number // Position along the curved path (0-100%)
   side: 'left' | 'right'
 }
 
-function MilestoneNode({ milestone, index, inView }: { milestone: Milestone; index: number; inView: boolean }) {
+function MilestoneNode({ milestone, index, inView, iconMap }: { milestone: Milestone; index: number; inView: boolean; iconMap: Record<string, any> }) {
   const [isHovered, setIsHovered] = useState(false)
+  const MilestoneIcon = iconMap[milestone.icon]
 
   return (
     <motion.div
@@ -73,7 +75,7 @@ function MilestoneNode({ milestone, index, inView }: { milestone: Milestone; ind
         }}
         transition={{ duration: 3, repeat: Infinity, delay: index * 0.3 }}
       >
-        <milestone.icon className="w-10 h-10 z-10" style={{ color: milestone.color }} />
+        <MilestoneIcon className="w-10 h-10 z-10" style={{ color: milestone.color }} />
 
         {/* Expanding pulse rings */}
         <motion.div
@@ -167,68 +169,27 @@ export default function Experience() {
 
   const pathProgress = useTransform(scrollYProgress, [0, 1], [0, 100])
 
-  const milestones: Milestone[] = [
-    {
-      year: '2024',
-      role: 'Senior AI Engineer',
-      company: 'Tech Innovation Labs',
-      description: 'Leading production RAG systems and multi-agent AI architectures for enterprise solutions.',
-      color: '#a78bfa',
-      icon: Crown,
-      pathPosition: 10,
-      side: 'left',
-    },
-    {
-      year: '2023',
-      role: 'ML Engineer',
-      company: 'DataCorp Solutions',
-      description: 'Built fine-tuned LLMs with custom training pipelines serving millions of requests.',
-      color: '#c084fc',
-      icon: Rocket,
-      pathPosition: 25,
-      side: 'right',
-    },
-    {
-      year: '2022',
-      role: 'Full Stack Developer',
-      company: 'WebTech Studios',
-      description: 'Developed scalable web apps with Django, React, and PostgreSQL.',
-      color: '#f472b6',
-      icon: Target,
-      pathPosition: 42,
-      side: 'left',
-    },
-    {
-      year: '2021',
-      role: 'Backend Developer',
-      company: 'CloudSoft Inc',
-      description: 'Created microservices architecture with Node.js and MongoDB.',
-      color: '#fb923c',
-      icon: Zap,
-      pathPosition: 60,
-      side: 'right',
-    },
-    {
-      year: '2020',
-      role: 'Junior Developer',
-      company: 'StartupHub',
-      description: 'Built RESTful APIs and database schemas for startup products.',
-      color: '#fbbf24',
-      icon: Sparkles,
-      pathPosition: 78,
-      side: 'left',
-    },
-    {
-      year: '2019',
-      role: 'Software Intern',
-      company: 'TechCorp',
-      description: 'Contributed to automation tools and learned industry best practices.',
-      color: '#34d399',
-      icon: Star,
-      pathPosition: 92,
-      side: 'right',
-    },
-  ]
+  // Icon mapping - maps string names to React components
+  const iconMap: Record<string, any> = {
+    Crown,
+    Rocket,
+    Target,
+    Zap,
+    Sparkles,
+    Star,
+  }
+
+  // Map JSON data to component-compatible format
+  const milestonesFromJSON: Milestone[] = experienceData.timeline.map(item => ({
+    year: item.year,
+    role: item.role,
+    company: item.company,
+    description: item.description,
+    color: item.color,
+    icon: item.icon,
+    pathPosition: item.pathPosition,
+    side: item.side as 'left' | 'right'
+  }))
 
   return (
     <section
@@ -366,12 +327,13 @@ export default function Experience() {
           </svg>
 
           {/* Milestone nodes positioned along the path */}
-          {milestones.map((milestone, index) => (
+          {milestonesFromJSON.map((milestone, index) => (
             <MilestoneNode
               key={index}
               milestone={milestone}
               index={index}
               inView={inView}
+              iconMap={iconMap}
             />
           ))}
 

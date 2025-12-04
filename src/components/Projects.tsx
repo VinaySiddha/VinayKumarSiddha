@@ -6,6 +6,7 @@ import { Github, ExternalLink, ArrowUpRight, Sparkles } from 'lucide-react'
 import { FaPython, FaReact, FaNodeJs, FaDocker } from 'react-icons/fa'
 import { SiLangchain, SiFastapi, SiDjango, SiMongodb, SiPostgresql, SiNextdotjs, SiPytorch, SiRedis, SiOpenai } from 'react-icons/si'
 import { useState, useRef } from 'react'
+import projectsData from '../../data/projects.json'
 
 interface Project {
   title: string
@@ -256,83 +257,37 @@ export default function Projects() {
     threshold: 0.1,
   })
 
-  const projects: Project[] = [
-    {
-      title: 'Advanced RAG System',
-      tagline: 'Production-grade multi-stage retrieval with hybrid search, reranking, and query expansion for intelligent question answering.',
-      tech: [
-        { name: 'LangChain', icon: SiLangchain, color: '#1C3C3C' },
-        { name: 'Python', icon: FaPython, color: '#3776AB' },
-        { name: 'FastAPI', icon: SiFastapi, color: '#009688' },
-        { name: 'OpenAI', icon: SiOpenai, color: '#10A37F' },
-      ],
-      github: 'https://github.com',
-      demo: 'https://demo.com',
-      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    },
-    {
-      title: 'CrewAI Multi-Agent System',
-      tagline: 'Collaborative AI agents with role-based workflows for automated research, content creation, and fact-checking.',
-      tech: [
-        { name: 'Python', icon: FaPython, color: '#3776AB' },
-        { name: 'LangChain', icon: SiLangchain, color: '#1C3C3C' },
-        { name: 'OpenAI', icon: SiOpenai, color: '#10A37F' },
-        { name: 'FastAPI', icon: SiFastapi, color: '#009688' },
-      ],
-      github: 'https://github.com',
-      demo: 'https://demo.com',
-      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    },
-    {
-      title: 'WhatsApp AI Assistant',
-      tagline: 'Intelligent conversational chatbot with context memory, NLP capabilities, and seamless Twilio integration.',
-      tech: [
-        { name: 'Python', icon: FaPython, color: '#3776AB' },
-        { name: 'OpenAI', icon: SiOpenai, color: '#10A37F' },
-        { name: 'Redis', icon: SiRedis, color: '#DC382D' },
-        { name: 'FastAPI', icon: SiFastapi, color: '#009688' },
-      ],
-      github: 'https://github.com',
-      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    },
-    {
-      title: 'Django Enterprise Platform',
-      tagline: 'Scalable full-stack application with role-based access control, RESTful APIs, and PostgreSQL integration.',
-      tech: [
-        { name: 'Django', icon: SiDjango, color: '#092E20' },
-        { name: 'PostgreSQL', icon: SiPostgresql, color: '#336791' },
-        { name: 'React', icon: FaReact, color: '#61DAFB' },
-        { name: 'Docker', icon: FaDocker, color: '#2496ED' },
-      ],
-      github: 'https://github.com',
-      demo: 'https://demo.com',
-      gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    },
-    {
-      title: 'LLM Fine-tuning Pipeline',
-      tagline: 'End-to-end automated pipeline for fine-tuning Mistral models with LoRA adapters and evaluation metrics.',
-      tech: [
-        { name: 'Python', icon: FaPython, color: '#3776AB' },
-        { name: 'PyTorch', icon: SiPytorch, color: '#EE4C2C' },
-        { name: 'FastAPI', icon: SiFastapi, color: '#009688' },
-        { name: 'Docker', icon: FaDocker, color: '#2496ED' },
-      ],
-      github: 'https://github.com',
-      gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-    },
-    {
-      title: 'Express.js Microservices',
-      tagline: 'Modern microservices architecture with MongoDB, Redis caching, JWT auth, and API Gateway orchestration.',
-      tech: [
-        { name: 'Node.js', icon: FaNodeJs, color: '#339933' },
-        { name: 'MongoDB', icon: SiMongodb, color: '#47A248' },
-        { name: 'Redis', icon: SiRedis, color: '#DC382D' },
-        { name: 'Docker', icon: FaDocker, color: '#2496ED' },
-      ],
-      github: 'https://github.com',
-      gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-    },
-  ]
+  // Icon mapping - maps string names to React components
+  const iconMap: Record<string, any> = {
+    FaPython,
+    FaReact,
+    FaNodeJs,
+    FaDocker,
+    SiLangchain,
+    SiFastapi,
+    SiDjango,
+    SiMongodb,
+    SiPostgresql,
+    SiNextdotjs,
+    SiPytorch,
+    SiRedis,
+    SiOpenai,
+  }
+
+  // Map JSON data to component-compatible format
+  const projects: Project[] = projectsData.projects.map(project => ({
+    title: project.title,
+    tagline: project.description,
+    tech: project.tags.map(tag => ({
+      name: tag.name,
+      icon: iconMap[tag.icon],
+      color: tag.color
+    })),
+    github: project.github,
+    demo: project.demo,
+    gradient: project.gradient,
+    image: project.image
+  }))
 
   return (
     <section id="projects" className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-black via-gray-900/50 to-black">

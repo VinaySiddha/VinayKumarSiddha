@@ -205,16 +205,17 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <motion.div
-        initial={{ opacity: 0, x: '100%' }}
+        initial={{ x: '100%' }}
         animate={{
-          opacity: isOpen ? 1 : 0,
           x: isOpen ? 0 : '100%',
         }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed top-24 right-6 z-40 lg:hidden w-[90%] max-w-sm cyber-glass-heavy rounded-3xl p-6 shadow-neon-blue"
+        className="fixed top-0 right-0 bottom-0 z-40 lg:hidden w-[85%] max-w-sm cyber-glass-heavy shadow-neon-blue overflow-y-auto"
+        style={{
+          pointerEvents: isOpen ? 'auto' : 'none',
+        }}
       >
-        <div className="flex flex-col gap-3">
-          {navLinks.map((link, index) => {
+        <div className="flex flex-col gap-3 p-6 pt-24">{navLinks.map((link, index) => {
             const isActive = activeSection === link.href.substring(1)
             return (
               <motion.a

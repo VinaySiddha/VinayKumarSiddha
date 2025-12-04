@@ -22,7 +22,6 @@ body {
   font-family: var(--font-space-grotesk);
   overflow-x: hidden;
   position: relative;
-  cursor: none;
 }
 
 /* Noise texture overlay */

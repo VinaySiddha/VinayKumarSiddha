@@ -2,8 +2,8 @@
 
 import { motion, useAnimation } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { Github, Linkedin, Mail, Download, Sparkles, Code2, Database } from 'lucide-react'
-import { FaRobot } from 'react-icons/fa'
+import { Github, Linkedin, Mail, Download, Sparkles } from 'lucide-react'
+import aboutData from '../../data/about.json'
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -37,8 +37,7 @@ export default function Hero() {
     }),
   }
 
-  const name = 'Vinny'
-  const title = 'AI Engineer & SDE'
+  const { name, title, greeting, description, highlights, availability, social } = aboutData
   const keywords = ['AI', 'SDE']
 
   return (
@@ -138,7 +137,7 @@ export default function Hero() {
               <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-cyber-cyan pulse-dot" 
                 style={{ boxShadow: '0 0 10px #00E8F3' }}
               />
-              <span className="text-xs sm:text-sm font-mono text-cyber-cyan">Available for Opportunities</span>
+              <span className="text-xs sm:text-sm font-mono text-cyber-cyan">{availability.status}</span>
             </motion.div>
 
             {/* Greeting */}
@@ -148,7 +147,7 @@ export default function Hero() {
               transition={{ delay: 0.5 }}
               className="text-cyber-blue text-base sm:text-lg md:text-xl mb-4 sm:mb-6 font-medium tracking-wide"
             >
-              Hello World! I'm
+              {greeting}
             </motion.p>
 
             {/* Name with letter-by-letter reveal - fluid typography */}
@@ -197,11 +196,7 @@ export default function Hero() {
               className="text-white/70 max-w-3xl mx-auto mb-6 sm:mb-10 leading-relaxed px-2"
               style={{ fontSize: 'clamp(0.875rem, 2.5vw, 1.25rem)' }}
             >
-              Architecting Advanced{' '}
-              <span className="highlight-keyword">RAG</span>,{' '}
-              <span className="highlight-keyword">Multi-Agent Systems</span>,{' '}
-              <span className="highlight-keyword">LangChain</span> Workflows, 
-              and Scalable Full-Stack Applications.
+              {description}
             </motion.p>
 
             {/* Specializations */}
@@ -211,20 +206,15 @@ export default function Hero() {
               transition={{ delay: 1.6 }}
               className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-10"
             >
-              {[
-                { icon: FaRobot, text: 'LLM Engineering' },
-                { icon: Code2, text: 'Full-Stack Dev' },
-                { icon: Database, text: 'Azure AI' },
-                { icon: Sparkles, text: 'Prompt Engineering' },
-              ].map((item, index) => (
+              {highlights.map((item, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
                   className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full cyber-glass border border-white/10 hover:border-cyber-blue/50 transition-all duration-300 group"
                 >
-                  <item.icon className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-cyber-blue group-hover:text-cyber-cyan transition-colors" />
+                  <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-cyber-blue group-hover:text-cyber-cyan transition-colors" />
                   <span className="text-xs sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
-                    {item.text}
+                    {item}
                   </span>
                 </motion.div>
               ))}
@@ -281,10 +271,10 @@ export default function Hero() {
               className="flex items-center justify-center gap-3 sm:gap-4"
             >
               {[
-                { icon: Github, href: 'https://github.com', label: 'GitHub', color: 'cyber-blue' },
-                { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn', color: 'cyber-purple' },
-                { icon: Mail, href: 'mailto:vinny@example.com', label: 'Email', color: 'cyber-pink' },
-                { icon: Download, href: '/resume.pdf', label: 'Resume', color: 'cyber-cyan' },
+                { icon: Github, href: social.github, label: 'GitHub', color: 'cyber-blue' },
+                { icon: Linkedin, href: social.linkedin, label: 'LinkedIn', color: 'cyber-purple' },
+                { icon: Mail, href: `mailto:${social.email}`, label: 'Email', color: 'cyber-pink' },
+                { icon: Download, href: social.resume, label: 'Resume', color: 'cyber-cyan' },
               ].map((social, index) => (
                 <motion.a
                   key={index}

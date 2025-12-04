@@ -28,18 +28,22 @@ export default function StatusPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchStatus()
-    const interval = setInterval(fetchStatus, 10000) // Refresh every 10 seconds
-    return () => clearInterval(interval)
+    // Use mock data for static export (Cloudflare Pages)
+    setStatusData(mockStatusData)
+    setLoading(false)
+    
+    // Optional: You can still update this with client-side fetch to external monitoring service
+    // const interval = setInterval(fetchStatus, 10000)
+    // return () => clearInterval(interval)
   }, [])
 
   const fetchStatus = async () => {
     try {
-      const response = await axios.get('/api/status')
-      setStatusData(response.data)
+      // For Cloudflare deployment, you can fetch from external monitoring API
+      // or use Cloudflare Workers for server-side logic
+      setStatusData(mockStatusData)
     } catch (error) {
       console.error('Status fetch error:', error)
-      // Fallback to mock data
       setStatusData(mockStatusData)
     } finally {
       setLoading(false)

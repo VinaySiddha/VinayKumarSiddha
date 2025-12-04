@@ -9,9 +9,9 @@ import MindscapeCanvas from '@/components/MindscapeCanvas'
 import Footer from '@/components/Footer'
 import BackgroundBlobs from '@/components/BackgroundBlobs'
 import ParticleBackground from '@/components/ParticleBackground'
-import CustomCursor from '@/components/CustomCursor'
 import Preloader from '@/components/Preloader'
 import ThemeToggle from '@/components/ThemeToggle'
+import DesktopNotice from '@/components/DesktopNotice'
 
 export default function Home() {
   return (
@@ -19,8 +19,8 @@ export default function Home() {
       {/* Preloader */}
       <Preloader />
       
-      {/* Custom Cursor */}
-      <CustomCursor />
+      {/* Desktop Notice */}
+      <DesktopNotice />
       
       {/* Theme Toggle */}
       <ThemeToggle />
