@@ -48,7 +48,7 @@ export default function About() {
 
   useEffect(() => {
     if (inView) {
-      const targets = { projects: 50, clients: 30, experience: 5 }
+      const targets = { projects: 10, clients: 3, experience: 1 }
       const duration = 2000
       const steps = 60
 
@@ -272,7 +272,7 @@ export default function About() {
               </motion.button>
 
               <motion.a
-                href="/resume.pdf"
+                href="https://drive.google.com/file/d/1ZRv8l9RlO91aXLi-MEcsI0FU95T5iYjg/view?usp=sharing"
                 download
                 className="px-6 py-3 rounded-xl border-2 border-cyber-cyan/50 text-cyber-cyan font-semibold flex items-center gap-2 hover:bg-cyber-cyan/10 transition-all cursor-hover group"
                 whileHover={{ scale: 1.05 }}

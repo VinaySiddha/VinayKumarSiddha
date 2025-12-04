@@ -2,93 +2,189 @@
   "projects": [
     {
       "id": 1,
-      "title": "Advanced RAG System",
-      "description": "Production-grade multi-stage retrieval with hybrid search, reranking, and query expansion for intelligent question answering.",
+      "title": "MLSC SVEC",
+      "description": "Full-stack portal for MLSC club with role listings, resume submission, admin dashboard, JWT auth, and AI-powered resume summarization using Google Genkit + Gemini.",
       "tags": [
-        { "name": "LangChain", "icon": "SiLangchain", "color": "#1C3C3C" },
-        { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
-        { "name": "FastAPI", "icon": "SiFastapi", "color": "#009688" },
-        { "name": "OpenAI", "icon": "SiOpenai", "color": "#10A37F" }
+        { "name": "Next.js", "icon": "SiNextdotjs", "color": "#000000" },
+        { "name": "Firebase", "icon": "SiFirebase", "color": "#FFCA28" },
+        { "name": "TypeScript", "icon": "SiTypescript", "color": "#3178C6" },
+        { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#06B6D4" },
+        { "name": "Docker", "icon": "FaDocker", "color": "#2496ED" },
+        { "name": "Kubernetes", "icon": "SiKubernetes", "color": "#326CE5" }
       ],
-      "github": "https://github.com/yourusername/project1",
-      "demo": "https://demo.com/project1",
-      "gradient": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      "github": "https://github.com/VinaySiddha/MLSCSVEC",
+      "demo": "https://mlscsvec.in",
+      "gradient": "linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)",
       "image": ""
     },
     {
       "id": 2,
-      "title": "CrewAI Multi-Agent System",
-      "description": "Collaborative AI agents with role-based workflows for automated research, content creation, and fact-checking.",
+      "title": "AI Shopping Agent",
+      "description": "Multi-agent product comparison system with real-time scraping from Amazon & Flipkart using CrewAI, FastAPI backend and React UI with Supabase integration.",
       "tags": [
-        { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
-        { "name": "LangChain", "icon": "SiLangchain", "color": "#1C3C3C" },
-        { "name": "OpenAI", "icon": "SiOpenai", "color": "#10A37F" },
-        { "name": "FastAPI", "icon": "SiFastapi", "color": "#009688" }
+        { "name": "React", "icon": "FaReact", "color": "#61DAFB" },
+        { "name": "FastAPI", "icon": "SiFastapi", "color": "#009688" },
+        { "name": "CrewAI", "icon": "SiOpenai", "color": "#10A37F" },
+        { "name": "Supabase", "icon": "SiSupabase", "color": "#3ECF8E" }
       ],
-      "github": "https://github.com/yourusername/project2",
-      "demo": "https://demo.com/project2",
-      "gradient": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+      "github": "https://github.com/VinaySiddha/ai-shopping-agent",
+      "demo": "",
+      "gradient": "linear-gradient(135deg, #FF7EB3 0%, #FF758C 100%)",
       "image": ""
     },
     {
       "id": 3,
-      "title": "WhatsApp AI Assistant",
-      "description": "Intelligent conversational chatbot with context memory, NLP capabilities, and seamless Twilio integration.",
+      "title": "Gen-AI",
+      "description": "Unified repository containing embeddings, crew_ai, chatbot, LLMs, memory buffers, vector databases and notebooks for RAG experimentation.",
       "tags": [
+        { "name": "LangChain", "icon": "SiLangchain", "color": "#1C3C3C" },
         { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
-        { "name": "OpenAI", "icon": "SiOpenai", "color": "#10A37F" },
-        { "name": "Redis", "icon": "SiRedis", "color": "#DC382D" },
-        { "name": "FastAPI", "icon": "SiFastapi", "color": "#009688" }
+        { "name": "OpenAI", "icon": "SiOpenai", "color": "#10A37F" }
       ],
-      "github": "https://github.com/yourusername/project3",
+      "github": "https://github.com/VinaySiddha/Gen-AI",
       "demo": "",
-      "gradient": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+      "gradient": "linear-gradient(135deg, #764ba2 0%, #667eea 100%)",
       "image": ""
     },
     {
       "id": 4,
-      "title": "Django Enterprise Platform",
-      "description": "Scalable full-stack application with role-based access control, RESTful APIs, and PostgreSQL integration.",
+      "title": "Intelligent Matchmaking System",
+      "description": "Peer-assisted learning platform using TF-IDF + cosine similarity for student grouping with gamification, analytics dashboards and FastAPI/React architecture.",
       "tags": [
-        { "name": "Django", "icon": "SiDjango", "color": "#092E20" },
-        { "name": "PostgreSQL", "icon": "SiPostgresql", "color": "#336791" },
+        { "name": "FastAPI", "icon": "SiFastapi", "color": "#009688" },
         { "name": "React", "icon": "FaReact", "color": "#61DAFB" },
-        { "name": "Docker", "icon": "FaDocker", "color": "#2496ED" }
+        { "name": "MongoDB", "icon": "SiMongodb", "color": "#47A248" },
+        { "name": "Machine Learning", "icon": "SiPython", "color": "#3776AB" }
       ],
-      "github": "https://github.com/yourusername/project4",
-      "demo": "https://demo.com/project4",
-      "gradient": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+      "github": "https://github.com/VinaySiddha/ca12",
+      "demo": "",
+      "gradient": "linear-gradient(135deg, #e96443 0%, #904e95 100%)",
       "image": ""
     },
     {
       "id": 5,
-      "title": "LLM Fine-tuning Pipeline",
-      "description": "End-to-end automated pipeline for fine-tuning Mistral models with LoRA adapters and evaluation metrics.",
+      "title": "Pharmacy College Website",
+      "description": "Official portal for Sri Vasavi Institute of Pharmaceutical Sciences with dynamic pages, responsive UI, SEO optimization & analytics tracking.",
       "tags": [
-        { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
-        { "name": "PyTorch", "icon": "SiPytorch", "color": "#EE4C2C" },
-        { "name": "FastAPI", "icon": "SiFastapi", "color": "#009688" },
-        { "name": "Docker", "icon": "FaDocker", "color": "#2496ED" }
+        { "name": "React", "icon": "FaReact", "color": "#61DAFB" },
+        { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#06B6D4" },
+        { "name": "JavaScript", "icon": "SiJavascript", "color": "#F7DF1E" }
       ],
-      "github": "https://github.com/yourusername/project5",
-      "demo": "",
-      "gradient": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+      "github": "https://github.com/VinaySiddha/pharmacy",
+      "demo": "https://svips.ac.in/",
+      "gradient": "linear-gradient(135deg, #43cea2 0%, #185a9d 100%)",
       "image": ""
     },
     {
       "id": 6,
-      "title": "Express.js Microservices",
-      "description": "Modern microservices architecture with MongoDB, Redis caching, JWT auth, and API Gateway orchestration.",
+      "title": "CertiCraft",
+      "description": "Students request certificates, admin approves and generates downloadable prints. Simple + structured certificate automation flow.",
+      "tags": [
+        { "name": "Node.js", "icon": "FaNodeJs", "color": "#339933" },
+        { "name": "MongoDB", "icon": "SiMongodb", "color": "#47A248" }
+      ],
+      "github": "https://github.com/VinaySiddha/certicraft",
+      "demo": "https://studio--certicraft-7jhvw.us-central1.hosted.app/",
+      "gradient": "linear-gradient(135deg, #FFAF7B 0%, #D76D77 100%)",
+      "image": ""
+    },
+    {
+      "id": 7,
+      "title": "Certificate QR Validation System",
+      "description": "QR-based certificate verification system where users scan and validate authenticity from institution records.",
       "tags": [
         { "name": "Node.js", "icon": "FaNodeJs", "color": "#339933" },
         { "name": "MongoDB", "icon": "SiMongodb", "color": "#47A248" },
-        { "name": "Redis", "icon": "SiRedis", "color": "#DC382D" },
-        { "name": "Docker", "icon": "FaDocker", "color": "#2496ED" }
+        { "name": "Express", "icon": "SiExpress", "color": "#000000" }
       ],
-      "github": "https://github.com/yourusername/project6",
+      "github": "https://github.com/VinaySiddha/certificate-validation",
+      "demo": "https://vinaysiddha.github.io/certificate-validation/",
+      "gradient": "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+      "image": ""
+    },
+    {
+      "id": 8,
+      "title": "WhatsApp Quiz Bot",
+      "description": "Node-based automated quiz bot using Baileys with poll questions, correct answer reveal, state tracking & web interface control.",
+      "tags": [
+        { "name": "Node.js", "icon": "FaNodeJs", "color": "#339933" },
+        { "name": "Baileys", "icon": "SiWhatsapp", "color": "#25D366" },
+        { "name": "Express", "icon": "SiExpress", "color": "#000000" }
+      ],
+      "github": "https://github.com/VinaySiddha/WhatsApp-Quiz-Bot",
+      "demo": "https://whatsapp-quiz-bot-z92c.onrender.com/",
+      "gradient": "linear-gradient(135deg, #f7971e 0%, #ffd200 100%)",
+      "image": ""
+    },
+    {
+      "id": 9,
+      "title": "AIMPACT 2.0 Movie Recommender",
+      "description": "Movie recommendation engine built using Python with dynamic suggestions based on user ratings and similarity analytics.",
+      "tags": [
+        { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
+        { "name": "Flask", "icon": "SiFlask", "color": "#000000" }
+      ],
+      "github": "https://github.com/VinaySiddha/AIMPACT-2.0---Movie-Recommendation-System",
       "demo": "",
-      "gradient": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
+      "gradient": "linear-gradient(135deg, #0cebeb 0%, #20e3b2 100%)",
+      "image": ""
+    },
+    {
+      "id": 10,
+      "title": "Certificate Auto-Generator",
+      "description": "Excel-based auto certificate PDF generator with intelligent text positioning and dynamic font scaling.",
+      "tags": [
+        { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
+        { "name": "ReportLab", "icon": "SiPython", "color": "#3776AB" }
+      ],
+      "github": "https://github.com/VinaySiddha/nameInCert",
+      "demo": "",
+      "gradient": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
+      "image": ""
+    },
+    {
+      "id": 11,
+      "title": "FontPreviewTool",
+      "description": "Upload a font, type text, download generated styled text as image output. Useful for previewing and designing typography.",
+      "tags": [
+        { "name": "Python", "icon": "FaPython", "color": "#3776AB" }
+      ],
+      "github": "https://github.com/VinaySiddha/FontPreviewTool",
+      "demo": "https://fontpreviewtool.netlify.app/",
+      "gradient": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
+      "image": ""
+    },
+
+    {
+      "id": 12,
+      "title": "CrewAI Autonomous Agent System",
+      "description": "Production-grade CrewAI flow with role-based agents for research, data extraction, writing, summarization and reasoning-driven task completion.",
+      "tags": [
+        { "name": "CrewAI", "icon": "SiOpenai", "color": "#10A37F" },
+        { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
+        { "name": "LangChain", "icon": "SiLangchain", "color": "#1C3C3C" },
+        { "name": "FastAPI", "icon": "SiFastapi", "color": "#009688" }
+      ],
+      "github": "https://github.com/VinaySiddha/Gen-AI/tree/main/crew_ai",
+      "demo": "",
+      "gradient": "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+      "image": ""
+    },
+    {
+      "id": 13,
+      "title": "Multi-Agent Architecture Framework",
+      "description": "Generalized multi-agent AI architecture with task delegation, embeddings, vector memory, document tools, RAG pipeline integration and tool-to-tool coordination.",
+      "tags": [
+        { "name": "Multi-Agent", "icon": "SiOpenai", "color": "#10A37F" },
+        { "name": "Embeddings", "icon": "SiPython", "color": "#3776AB" },
+        { "name": "VectorDB", "icon": "SiMongodb", "color": "#47A248" },
+        { "name": "RAG", "icon": "SiLangchain", "color": "#1C3C3C" }
+      ],
+      "github": "https://github.com/VinaySiddha/Gen-AI",
+      "demo": "",
+      "gradient": "linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)",
       "image": ""
     }
+
   ]
 }

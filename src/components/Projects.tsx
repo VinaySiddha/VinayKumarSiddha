@@ -4,7 +4,11 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Github, ExternalLink, ArrowUpRight, Sparkles } from 'lucide-react'
 import { FaPython, FaReact, FaNodeJs, FaDocker } from 'react-icons/fa'
-import { SiLangchain, SiFastapi, SiDjango, SiMongodb, SiPostgresql, SiNextdotjs, SiPytorch, SiRedis, SiOpenai } from 'react-icons/si'
+import { 
+  SiLangchain, SiFastapi, SiDjango, SiMongodb, SiPostgresql, SiNextdotjs, 
+  SiPytorch, SiRedis, SiOpenai, SiFirebase, SiTypescript, SiTailwindcss, 
+  SiKubernetes, SiSupabase, SiJavascript, SiExpress, SiWhatsapp, SiFlask, SiPython
+} from 'react-icons/si'
 import { useState, useRef } from 'react'
 import projectsData from '../../data/projects.json'
 
@@ -272,6 +276,16 @@ export default function Projects() {
     SiPytorch,
     SiRedis,
     SiOpenai,
+    SiFirebase,
+    SiTypescript,
+    SiTailwindcss,
+    SiKubernetes,
+    SiSupabase,
+    SiJavascript,
+    SiExpress,
+    SiWhatsapp,
+    SiFlask,
+    SiPython,
   }
 
   // Map JSON data to component-compatible format
@@ -351,7 +365,7 @@ export default function Projects() {
           className="text-center mt-20"
         >
           <motion.a
-            href="https://github.com"
+            href="https://github.com/VinaySiddha"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-lg shadow-2xl hover:shadow-purple-500/50 transition-shadow"

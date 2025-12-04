@@ -32,9 +32,9 @@ export default function Contact() {
     try {
       // Initialize EmailJS with your credentials
       // Get your credentials from https://www.emailjs.com/
-      const SERVICE_ID = 'YOUR_SERVICE_ID' // Replace with your EmailJS service ID
-      const TEMPLATE_ID = 'YOUR_TEMPLATE_ID' // Replace with your EmailJS template ID
-      const PUBLIC_KEY = 'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      const SERVICE_ID = 'service_4o8xbnc' // Replace with your EmailJS service ID
+      const TEMPLATE_ID = 'template_js1p70m' // Replace with your EmailJS template ID
+      const PUBLIC_KEY = 'K3RhISgmwwgC89AqN' // Replace with your EmailJS public key
 
       const result = await emailjs.sendForm(
         SERVICE_ID,
@@ -78,19 +78,19 @@ export default function Contact() {
     {
       icon: Mail,
       label: 'Email',
-      value: 'vinny@example.com',
-      href: 'mailto:vinny@example.com',
+      value: 'vinaysiddha19@gmail.com',
+      href: 'mailto:vinaysiddha19@gmail.com',
     },
     {
       icon: Phone,
       label: 'Phone',
-      value: '+1 234 567 8900',
-      href: 'tel:+12345678900',
+      value: '+91 984-937-2827',
+      href: 'tel:+919849372827',
     },
     {
       icon: MapPin,
       label: 'Location',
-      value: 'City, Country',
+      value: 'Tadepalligudem, India',
       href: null,
     },
   ]
@@ -99,25 +99,25 @@ export default function Contact() {
     {
       icon: Github,
       name: 'GitHub',
-      href: 'https://github.com',
+      href: 'https://github.com/VinaySiddha',
       color: 'cyber-blue',
     },
     {
       icon: Linkedin,
       name: 'LinkedIn',
-      href: 'https://linkedin.com',
+      href: 'https://linkedin.com/in/vinaysiddha',
       color: 'cyber-purple',
     },
     {
       icon: Twitter,
       name: 'Twitter',
-      href: 'https://twitter.com',
+      href: 'https://twitter.com/vinaysiddha',
       color: 'cyber-cyan',
     },
     {
       icon: ExternalLink,
       name: 'Portfolio',
-      href: 'https://vinny.dev',
+      href: 'https://vinaysiddha.dev',
       color: 'cyber-pink',
     },
   ]
@@ -366,14 +366,14 @@ export default function Contact() {
                 </motion.button>
 
                 {/* EmailJS Setup Instructions */}
-                <div className="mt-4 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
+                {/* <div className="mt-4 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
                   <p className="text-xs text-yellow-400 font-mono">
                     📧 To enable email functionality, update EmailJS credentials in Contact.tsx with your service ID, template ID, and public key from{' '}
                     <a href="https://www.emailjs.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-yellow-300">
                       emailjs.com
                     </a>
                   </p>
-                </div>
+                </div> */}
               </div>
             </form>
           </motion.div>

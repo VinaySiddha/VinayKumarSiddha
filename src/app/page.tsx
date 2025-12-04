@@ -12,10 +12,14 @@ import ParticleBackground from '@/components/ParticleBackground'
 import Preloader from '@/components/Preloader'
 import ThemeToggle from '@/components/ThemeToggle'
 import DesktopNotice from '@/components/DesktopNotice'
+import WarningModal from '@/components/WarningModal'
 
 export default function Home() {
   return (
     <main className="relative min-h-screen">
+      {/* Warning Modal - Shows first time */}
+      <WarningModal />
+      
       {/* Preloader */}
       <Preloader />
       

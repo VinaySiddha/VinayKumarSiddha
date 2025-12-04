@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { Rocket, Sparkles, Target, Zap, Crown, Star } from 'lucide-react'
+import { Rocket, Sparkles, Target, Zap, Crown, Star, Brain, Cloud, Activity } from 'lucide-react'
 import { useRef, useState } from 'react'
 import experienceData from '../../data/experience.json'
 
@@ -13,153 +13,127 @@ interface Milestone {
   description: string
   color: string
   icon: string
-  pathPosition: number // Position along the curved path (0-100%)
+  pathPosition: number
   side: 'left' | 'right'
 }
 
-function MilestoneNode({ milestone, index, inView, iconMap }: { milestone: Milestone; index: number; inView: boolean; iconMap: Record<string, any> }) {
+function HeartbeatCard({ milestone, index, inView, iconMap }: { milestone: Milestone; index: number; inView: boolean; iconMap: Record<string, any> }) {
   const [isHovered, setIsHovered] = useState(false)
   const MilestoneIcon = iconMap[milestone.icon]
 
   return (
     <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={inView ? { scale: 1, opacity: 1 } : {}}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{
-        duration: 0.6,
-        delay: index * 0.15,
-        type: 'spring',
-        stiffness: 200,
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: 'easeOut',
       }}
-      className="absolute"
-      style={{
-        left: milestone.side === 'left' ? '35%' : '65%',
-        top: `${milestone.pathPosition}%`,
-        transform: 'translate(-50%, -50%)',
-      }}
+      className="flex-shrink-0 w-80 lg:w-96"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Connecting ribbon to center path */}
-      <motion.div
-        className="absolute top-1/2 h-0.5 origin-left"
-        style={{
-          width: '120px',
-          left: milestone.side === 'left' ? '100%' : 'auto',
-          right: milestone.side === 'right' ? '100%' : 'auto',
-          background: `linear-gradient(${milestone.side === 'left' ? '90deg' : '-90deg'}, ${milestone.color}, transparent)`,
-        }}
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={inView ? { scaleX: 1, opacity: 1 } : {}}
-        transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
-      />
-
-      {/* Pulsing node */}
-      <motion.div
-        className="relative w-20 h-20 rounded-full flex items-center justify-center cursor-pointer group"
-        style={{
-          background: `radial-gradient(circle, ${milestone.color}40, ${milestone.color}10)`,
-          border: `3px solid ${milestone.color}`,
-          boxShadow: `0 0 30px ${milestone.color}50, inset 0 0 20px ${milestone.color}20`,
-        }}
-        whileHover={{
-          scale: 1.2,
-          boxShadow: `0 0 50px ${milestone.color}80, inset 0 0 30px ${milestone.color}40`,
-        }}
-        animate={{
-          boxShadow: [
-            `0 0 30px ${milestone.color}50, inset 0 0 20px ${milestone.color}20`,
-            `0 0 50px ${milestone.color}80, inset 0 0 30px ${milestone.color}40`,
-            `0 0 30px ${milestone.color}50, inset 0 0 20px ${milestone.color}20`,
-          ],
-        }}
-        transition={{ duration: 3, repeat: Infinity, delay: index * 0.3 }}
-      >
-        <MilestoneIcon className="w-10 h-10 z-10" style={{ color: milestone.color }} />
-
-        {/* Expanding pulse rings */}
+      <div className="flex flex-col items-center gap-4">
+        {/* Main pulsing node */}
         <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{ border: `2px solid ${milestone.color}` }}
-          animate={{
-            scale: [1, 1.8, 1.8],
-            opacity: [0.8, 0, 0],
-          }}
-          transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
-        />
-        <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{ border: `2px solid ${milestone.color}` }}
-          animate={{
-            scale: [1, 1.8, 1.8],
-            opacity: [0.8, 0, 0],
-          }}
-          transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 + 0.7 }}
-        />
-      </motion.div>
-
-      {/* Info card that appears on hover */}
-      <motion.div
-        className="absolute top-1/2 -translate-y-1/2 w-80 p-6 rounded-2xl backdrop-blur-xl border z-50"
-        animate={{
-          opacity: isHovered ? 1 : 0,
-          scale: isHovered ? 1 : 0.9,
-          x: isHovered ? 0 : (milestone.side === 'left' ? 20 : -20),
-        }}
-        transition={{ duration: 0.3 }}
-        style={{
-          left: milestone.side === 'left' ? '-360px' : 'auto',
-          right: milestone.side === 'right' ? '-360px' : 'auto',
-          backgroundColor: 'rgba(0, 0, 0, 0.95)',
-          borderColor: `${milestone.color}80`,
-          boxShadow: `0 20px 60px ${milestone.color}50, inset 0 0 30px ${milestone.color}10`,
-          pointerEvents: 'none',
-        }}
-      >
-        {/* Year badge */}
-        <div
-          className="inline-block px-3 py-1 rounded-full text-xs font-black mb-3 tracking-wider"
+          className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center z-10"
           style={{
-            backgroundColor: `${milestone.color}20`,
-            color: milestone.color,
-            border: `2px solid ${milestone.color}60`,
+            background: `radial-gradient(circle, ${milestone.color}40, transparent)`,
+            border: `2px solid ${milestone.color}`,
           }}
+          animate={isHovered ? {
+            scale: [1, 1.15, 1],
+            boxShadow: [
+              `0 0 20px ${milestone.color}60`,
+              `0 0 35px ${milestone.color}90`,
+              `0 0 20px ${milestone.color}60`,
+            ],
+          } : {
+            boxShadow: `0 0 15px ${milestone.color}40`,
+          }}
+          transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0 }}
         >
-          {milestone.year}
-        </div>
+          <MilestoneIcon className="w-8 h-8 lg:w-10 lg:h-10" style={{ color: milestone.color }} />
 
-        {/* Role title */}
-        <h3 className="text-xl font-black text-white mb-1 leading-tight">
-          {milestone.role}
-        </h3>
+          {/* Pulse ring on hover */}
+          {isHovered && (
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: `1px solid ${milestone.color}` }}
+              initial={{ scale: 1, opacity: 0.6 }}
+              animate={{
+                scale: 2,
+                opacity: 0,
+              }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeOut' }}
+            />
+          )}
+        </motion.div>
 
-        {/* Company */}
-        <p className="text-base font-bold mb-3" style={{ color: milestone.color }}>
-          {milestone.company}
-        </p>
-
-        {/* Description */}
-        <p className="text-sm text-white/70 leading-relaxed">
-          {milestone.description}
-        </p>
-
-        {/* Decorative corner accent */}
-        <div
-          className="absolute top-2 right-2 w-8 h-8 rounded-full opacity-40"
+        {/* Connecting vertical line to card */}
+        <motion.div
+          className="w-px h-8 lg:h-12"
           style={{
-            background: `radial-gradient(circle, ${milestone.color}, transparent)`,
+            backgroundColor: `${milestone.color}50`,
           }}
+          initial={{ scaleY: 0 }}
+          animate={inView ? { scaleY: 1 } : {}}
+          transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
         />
-      </motion.div>
+
+        {/* Content Card */}
+        <motion.div
+          className="backdrop-blur-sm border rounded-xl p-5 relative overflow-hidden w-full"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            borderColor: `${milestone.color}30`,
+          }}
+          whileHover={{
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            borderColor: `${milestone.color}60`,
+            boxShadow: `0 8px 32px ${milestone.color}20`,
+            y: -5,
+          }}
+          transition={{ duration: 0.3 }}
+        >
+          {/* Year badge */}
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-bold mb-3"
+            style={{
+              backgroundColor: `${milestone.color}15`,
+              color: milestone.color,
+            }}
+          >
+            {milestone.year}
+          </div>
+
+          {/* Role title */}
+          <h3 className="text-lg lg:text-xl font-bold text-white mb-2 leading-tight">
+            {milestone.role}
+          </h3>
+
+          {/* Company */}
+          <p className="text-sm font-semibold mb-3" style={{ color: `${milestone.color}dd` }}>
+            {milestone.company}
+          </p>
+
+          {/* Description */}
+          <p className="text-xs lg:text-sm text-white/60 leading-relaxed">
+            {milestone.description}
+          </p>
+        </motion.div>
+      </div>
     </motion.div>
   )
 }
 
 export default function Experience() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [ref, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.1,
+    threshold: 0.05,
   })
 
   const { scrollYProgress } = useScroll({
@@ -167,9 +141,9 @@ export default function Experience() {
     offset: ['start end', 'end start'],
   })
 
-  const pathProgress = useTransform(scrollYProgress, [0, 1], [0, 100])
+  const lineWidth = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%'])
 
-  // Icon mapping - maps string names to React components
+  // Icon mapping
   const iconMap: Record<string, any> = {
     Crown,
     Rocket,
@@ -177,9 +151,11 @@ export default function Experience() {
     Zap,
     Sparkles,
     Star,
+    Brain,
+    Cloud,
   }
 
-  // Map JSON data to component-compatible format
+  // Map JSON data
   const milestonesFromJSON: Milestone[] = experienceData.timeline.map(item => ({
     year: item.year,
     role: item.role,
@@ -195,183 +171,198 @@ export default function Experience() {
     <section
       id="experience"
       ref={containerRef}
-      className="relative py-40 px-6 bg-black overflow-hidden"
+      className="relative py-24 lg:py-32 px-4 lg:px-6 bg-gradient-to-b from-black via-gray-900/30 to-black overflow-hidden"
     >
-      {/* Animated mesh gradient background */}
-      <div className="absolute inset-0 opacity-30">
-        <motion.div
-          className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-3xl"
+      {/* Subtle background grid */}
+      <div className="absolute inset-0 opacity-5">
+        <div 
+          className="absolute inset-0" 
           style={{
-            background: 'radial-gradient(circle, rgba(167, 139, 250, 0.4), transparent)',
+            backgroundImage: 'linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px)',
+            backgroundSize: '50px 50px'
           }}
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{ duration: 15, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-3xl"
-          style={{
-            background: 'radial-gradient(circle, rgba(244, 114, 182, 0.4), transparent)',
-          }}
-          animate={{
-            x: [0, -100, 0],
-            y: [0, -50, 0],
-            scale: [1.2, 1, 1.2],
-          }}
-          transition={{ duration: 18, repeat: Infinity }}
         />
       </div>
 
-      <div className="container mx-auto max-w-6xl relative z-10" ref={ref}>
+      {/* Floating gradient orbs */}
+      <motion.div
+        className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
+        style={{ background: 'radial-gradient(circle, #8b5cf6, transparent)' }}
+        animate={{
+          x: [0, 30, 0],
+          y: [0, 20, 0],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute top-1/3 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
+        style={{ background: 'radial-gradient(circle, #ec4899, transparent)' }}
+        animate={{
+          x: [0, -30, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      <div className="container mx-auto max-w-7xl relative z-10" ref={ref}>
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-32"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16 lg:mb-20"
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-2 border-purple-500/40 backdrop-blur-xl mb-8"
-            initial={{ scale: 0.8, opacity: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm mb-6"
+            style={{
+              background: 'rgba(34, 211, 238, 0.1)',
+              border: '1px solid rgba(34, 211, 238, 0.2)',
+            }}
+            initial={{ scale: 0.9, opacity: 0 }}
             animate={inView ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Sparkles className="w-5 h-5 text-purple-400" />
-            <span className="text-base font-black text-purple-300 tracking-wide">JOURNEY MAP</span>
+            <Activity className="w-4 h-4 text-cyan-400" />
+            <span className="text-sm font-bold text-cyan-300 tracking-wide">CAREER TIMELINE</span>
           </motion.div>
 
-          <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-            Career
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-4 leading-tight">
+            Professional
             <br />
-            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Orbital Path
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Journey
             </span>
           </h2>
 
-          <p className="text-white/70 text-xl max-w-2xl mx-auto font-light">
-            Navigate through the milestones that shaped my professional journey
+          <p className="text-white/50 text-base lg:text-lg max-w-2xl mx-auto">
+            Milestones that shaped my career path
           </p>
         </motion.div>
 
-        {/* Orbital timeline container */}
-        <div className="relative h-[1400px] lg:h-[1200px]">
-          {/* Central curved path - SVG S-curve */}
-          <svg
-            className="absolute inset-0 w-full h-full pointer-events-none"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
+        {/* Horizontal Timeline Container */}
+        <div className="relative">
+          {/* Central horizontal line */}
+          <div className="absolute top-8 lg:top-10 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+          
+          {/* Animated progress line */}
+          <motion.div
+            className="absolute top-8 lg:top-10 left-0 h-px origin-left"
+            style={{
+              width: lineWidth,
+              background: 'linear-gradient(90deg, #22d3ee, #8b5cf6, #ec4899)',
+              boxShadow: '0 0 10px rgba(34, 211, 238, 0.5)',
+            }}
+          />
+
+          {/* Scrollable timeline with snap scroll */}
+          <div 
+            ref={scrollContainerRef}
+            className="overflow-x-auto pb-8 snap-x snap-mandatory hide-scrollbar"
+            style={{
+              scrollBehavior: 'smooth',
+            }}
           >
-            <defs>
-              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.8" />
-                <stop offset="25%" stopColor="#c084fc" stopOpacity="0.8" />
-                <stop offset="50%" stopColor="#f472b6" stopOpacity="0.8" />
-                <stop offset="75%" stopColor="#fb923c" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#34d399" stopOpacity="0.8" />
-              </linearGradient>
+            <div className="flex gap-8 lg:gap-12 px-4">
+              {milestonesFromJSON.map((milestone, index) => (
+                <div key={index} className="snap-center">
+                  <HeartbeatCard
+                    milestone={milestone}
+                    index={index}
+                    inView={inView}
+                    iconMap={iconMap}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-
-            {/* Main flowing S-curve path */}
-            <motion.path
-              d="M 50,5 Q 25,20 30,35 T 50,50 Q 75,65 70,80 T 50,95"
-              fill="none"
-              stroke="url(#pathGradient)"
-              strokeWidth="0.3"
-              strokeLinecap="round"
-              filter="url(#glow)"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={inView ? { pathLength: 1, opacity: 1 } : {}}
-              transition={{ duration: 2, ease: 'easeInOut' }}
-            />
-
-            {/* Secondary glow path */}
-            <motion.path
-              d="M 50,5 Q 25,20 30,35 T 50,50 Q 75,65 70,80 T 50,95"
-              fill="none"
-              stroke="white"
-              strokeWidth="0.15"
-              strokeLinecap="round"
-              opacity="0.5"
-              initial={{ pathLength: 0 }}
-              animate={inView ? { pathLength: 1 } : {}}
-              transition={{ duration: 2, ease: 'easeInOut', delay: 0.2 }}
-            />
-
-            {/* Animated progress indicator */}
-            <motion.circle
-              r="1"
-              fill="white"
+          {/* Navigation buttons */}
+          <div className="flex justify-center gap-4 mt-8">
+            <motion.button
+              onClick={() => scrollContainerRef.current?.scrollBy({ left: -400, behavior: 'smooth' })}
+              className="p-3 rounded-full backdrop-blur-sm"
               style={{
-                offsetPath: 'path("M 50,5 Q 25,20 30,35 T 50,50 Q 75,65 70,80 T 50,95")',
-                offsetDistance: useTransform(pathProgress, [0, 100], ['0%', '100%']),
+                background: 'rgba(34, 211, 238, 0.1)',
+                border: '1px solid rgba(34, 211, 238, 0.2)',
               }}
+              whileHover={{ scale: 1.1, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+              whileTap={{ scale: 0.95 }}
             >
-              <animate
-                attributeName="opacity"
-                values="0.3;1;0.3"
-                dur="2s"
-                repeatCount="indefinite"
-              />
-            </motion.circle>
-          </svg>
-
-          {/* Milestone nodes positioned along the path */}
-          {milestonesFromJSON.map((milestone, index) => (
-            <MilestoneNode
-              key={index}
-              milestone={milestone}
-              index={index}
-              inView={inView}
-              iconMap={iconMap}
-            />
-          ))}
-
-          {/* Floating particles along the path */}
-          {[...Array(12)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 rounded-full bg-white/40"
+              <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </motion.button>
+            
+            <motion.button
+              onClick={() => scrollContainerRef.current?.scrollBy({ left: 400, behavior: 'smooth' })}
+              className="p-3 rounded-full backdrop-blur-sm"
               style={{
-                left: '50%',
-                top: `${(i / 12) * 100}%`,
+                background: 'rgba(34, 211, 238, 0.1)',
+                border: '1px solid rgba(34, 211, 238, 0.2)',
               }}
+              whileHover={{ scale: 1.1, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.button>
+          </div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ delay: 1 }}
+            className="flex justify-center mt-4"
+          >
+            <motion.div
+              className="flex items-center gap-2 text-white/30 text-sm"
               animate={{
-                x: [0, Math.sin(i) * 30, 0],
-                opacity: [0.2, 0.6, 0.2],
-                scale: [1, 1.5, 1],
+                x: [0, 10, 0],
               }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 0.2,
-              }}
-            />
-          ))}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <span>Drag or use arrows</span>
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* Legend */}
+        {/* Bottom status */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="text-center mt-20"
+          className="text-center mt-12"
         >
-          <p className="text-white/50 text-sm font-light italic">
-            Hover over nodes to explore each milestone
-          </p>
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full"
+            style={{
+              backgroundColor: 'rgba(34, 211, 238, 0.1)',
+              border: '1px solid rgba(34, 211, 238, 0.2)',
+            }}
+          >
+            <motion.div
+              className="w-2 h-2 rounded-full bg-cyan-400"
+              animate={{
+                opacity: [1, 0.5, 1],
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+            <span className="text-xs font-medium text-cyan-300">Timeline Active</span>
+          </div>
         </motion.div>
       </div>
+
+      <style jsx global>{`
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   )
 }

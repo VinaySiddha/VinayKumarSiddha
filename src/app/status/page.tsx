@@ -2,319 +2,421 @@
 
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { Activity, Server, Zap, Clock, CheckCircle, AlertTriangle, XCircle, TrendingUp, ArrowLeft } from 'lucide-react'
+import { CheckCircle, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
-import axios from 'axios'
+
+interface Incident {
+  id: string
+  title: string
+  status: 'resolved' | 'identified' | 'monitoring'
+  date: string
+  resolvedTime: string
+  identifiedTime: string
+  updates: { time: string; message: string; status: string }[]
+}
+
+interface StatusHistory {
+  date: string
+  uptime: number
+}
 
 interface StatusData {
-  uptime: number
-  responseTime: number
-  lastChecked: string
-  status: 'operational' | 'degraded' | 'down'
-  services: {
-    name: string
-    status: 'operational' | 'degraded' | 'down'
+  incidents: Incident[]
+  history: StatusHistory[]
+  overallUptime: number
+  currentTime: string
+  currentStatus?: {
+    status: 'up' | 'down'
     responseTime: number
-  }[]
-  history: {
-    timestamp: string
-    uptime: number
-    responseTime: number
-  }[]
+  }
+}
+
+// Client-side monitoring
+async function checkWebsiteStatus(url: string): Promise<{ status: 'up' | 'down', responseTime: number }> {
+  const startTime = Date.now()
+  
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000)
+    
+    const response = await fetch(url, {
+      method: 'HEAD',
+      mode: 'no-cors', // For cross-origin requests
+      cache: 'no-store'
+    })
+    
+    clearTimeout(timeoutId)
+    const responseTime = Date.now() - startTime
+    
+    return {
+      status: 'up',
+      responseTime
+    }
+  } catch (error) {
+    return {
+      status: 'down',
+      responseTime: Date.now() - startTime
+    }
+  }
 }
 
 export default function StatusPage() {
+  const [currentTime, setCurrentTime] = useState(new Date())
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Use mock data for static export (Cloudflare Pages)
-    setStatusData(mockStatusData)
-    setLoading(false)
-    
-    // Optional: You can still update this with client-side fetch to external monitoring service
-    // const interval = setInterval(fetchStatus, 10000)
-    // return () => clearInterval(interval)
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
+    return () => clearInterval(timer)
   }, [])
 
-  const fetchStatus = async () => {
+  useEffect(() => {
+    fetchStatusData()
+    // Refresh status every 30 seconds
+    const interval = setInterval(fetchStatusData, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const fetchStatusData = async () => {
     try {
-      // For Cloudflare deployment, you can fetch from external monitoring API
-      // or use Cloudflare Workers for server-side logic
-      setStatusData(mockStatusData)
+      // Check website status
+      const websiteUrl = 'https://vinaysiddha.dev'
+      const currentStatus = await checkWebsiteStatus(websiteUrl)
+      
+      // Get stored monitoring data from localStorage
+      const storedData = localStorage.getItem('monitoring-history')
+      const monitoringHistory: Array<{timestamp: string, status: 'up' | 'down', responseTime: number}> = 
+        storedData ? JSON.parse(storedData) : []
+      
+      // Add current check
+      monitoringHistory.push({
+        timestamp: new Date().toISOString(),
+        status: currentStatus.status,
+        responseTime: currentStatus.responseTime
+      })
+      
+      // Keep last 500 checks
+      if (monitoringHistory.length > 500) {
+        monitoringHistory.splice(0, monitoringHistory.length - 500)
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('monitoring-history', JSON.stringify(monitoringHistory))
+      
+      // Generate 45-day history
+      const history: StatusHistory[] = []
+      const today = new Date()
+      
+      for (let i = 44; i >= 0; i--) {
+        const date = new Date(today)
+        date.setDate(date.getDate() - i)
+        
+        const dayStart = new Date(date.setHours(0, 0, 0, 0))
+        const dayEnd = new Date(date.setHours(23, 59, 59, 999))
+        
+        const dayData = monitoringHistory.filter(d => {
+          const timestamp = new Date(d.timestamp)
+          return timestamp >= dayStart && timestamp <= dayEnd
+        })
+        
+        const uptime = dayData.length > 0
+          ? (dayData.filter(d => d.status === 'up').length / dayData.length) * 100
+          : 100
+        
+        history.push({
+          date: date.toISOString(),
+          uptime: Math.round(uptime * 100) / 100
+        })
+      }
+      
+      // Calculate overall uptime
+      const overallUptime = monitoringHistory.length > 0
+        ? (monitoringHistory.filter(d => d.status === 'up').length / monitoringHistory.length) * 100
+        : 100
+      
+      // Get incidents from localStorage
+      const storedIncidents = localStorage.getItem('status-incidents')
+      const incidents: Incident[] = storedIncidents ? JSON.parse(storedIncidents) : []
+      
+      setStatusData({
+        currentStatus,
+        incidents,
+        history,
+        overallUptime: Math.round(overallUptime * 100) / 100,
+        currentTime: new Date().toISOString()
+      })
     } catch (error) {
-      console.error('Status fetch error:', error)
-      setStatusData(mockStatusData)
+      console.error('Failed to fetch status:', error)
+      
+      // Fallback data
+      const history: StatusHistory[] = []
+      const today = new Date()
+      
+      for (let i = 44; i >= 0; i--) {
+        const date = new Date(today)
+        date.setDate(date.getDate() - i)
+        history.push({
+          date: date.toISOString(),
+          uptime: 100
+        })
+      }
+      
+      setStatusData({
+        incidents: [],
+        history,
+        overallUptime: 100,
+        currentTime: new Date().toISOString()
+      })
     } finally {
       setLoading(false)
     }
   }
 
-  const mockStatusData: StatusData = {
-    uptime: 99.98,
-    responseTime: 142,
-    lastChecked: new Date().toISOString(),
-    status: 'operational',
-    services: [
-      { name: 'Website', status: 'operational', responseTime: 98 },
-      { name: 'API Server', status: 'operational', responseTime: 156 },
-      { name: 'Database', status: 'operational', responseTime: 23 },
-      { name: 'CDN', status: 'operational', responseTime: 45 },
-    ],
-    history: Array.from({ length: 30 }, (_, i) => ({
-      timestamp: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString(),
-      uptime: 99.5 + Math.random() * 0.5,
-      responseTime: 100 + Math.random() * 100,
-    })).reverse(),
+  if (loading || !statusData) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+            className="w-12 h-12 border-2 border-green-500 border-t-transparent rounded-full mx-auto mb-4"
+          />
+          <p className="text-gray-400">Loading status...</p>
+        </div>
+      </main>
+    )
   }
 
-  const data = statusData || mockStatusData
+  const { incidents, history, overallUptime } = statusData
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'operational':
-        return { bg: 'bg-green-500/10', border: 'border-green-500/50', text: 'text-green-400', icon: CheckCircle }
-      case 'degraded':
-        return { bg: 'bg-yellow-500/10', border: 'border-yellow-500/50', text: 'text-yellow-400', icon: AlertTriangle }
-      case 'down':
-        return { bg: 'bg-red-500/10', border: 'border-red-500/50', text: 'text-red-400', icon: XCircle }
-      default:
-        return { bg: 'bg-gray-500/10', border: 'border-gray-500/50', text: 'text-gray-400', icon: Activity }
+  const getStatusColor = (uptime: number) => {
+    if (uptime === 100) return 'bg-green-500'
+    if (uptime >= 99) return 'bg-orange-500'
+    return 'bg-red-500'
+  }
+
+  const formatDate = (date: Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'short'
     }
+    return date.toLocaleString('en-US', options)
   }
-
-  const statusColor = getStatusColor(data.status)
-  const StatusIcon = statusColor.icon
 
   return (
-    <main className="relative min-h-screen bg-cyber-dark py-20 px-6 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-cyber-dark via-cyber-blue/5 to-cyber-dark" />
-      <motion.div
-        className="absolute top-1/4 right-1/3 w-96 h-96 rounded-full opacity-20"
-        style={{
-          background: 'radial-gradient(circle, #00E8F3 0%, transparent 70%)',
-          filter: 'blur(120px)',
-        }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.2, 0.3, 0.2],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
-
-      <div className="container mx-auto max-w-7xl relative z-10">
+    <main className="min-h-screen bg-black text-white py-12 px-4">
+      <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
           className="mb-12"
         >
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-cyber-blue hover:text-cyber-cyan transition-colors mb-8 cursor-hover"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8 text-sm"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="font-mono text-sm">Back to Portfolio</span>
+            ← Back to Portfolio
           </Link>
 
-          <div className="flex items-center gap-4 mb-4">
-            <Activity className="w-12 h-12 text-cyber-cyan" />
-            <h1 className="text-5xl md:text-6xl font-bold gradient-text-fusion">
-              System <span className="highlight-keyword font-mono">Status</span>
-            </h1>
-          </div>
-          <p className="text-white/60 text-lg">Real-time monitoring and uptime statistics</p>
-        </motion.div>
-
-        {/* Overall Status Banner */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className={`cyber-glass-heavy p-8 rounded-3xl mb-8 border-2 ${statusColor.border} ${statusColor.bg}`}
-        >
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <StatusIcon className={`w-12 h-12 ${statusColor.text}`} />
-              </motion.div>
-              <div>
-                <h2 className={`text-3xl font-bold ${statusColor.text} mb-1`}>
-                  {data.status === 'operational' && 'All Systems Operational'}
-                  {data.status === 'degraded' && 'Partial Outage'}
-                  {data.status === 'down' && 'Major Outage'}
-                </h2>
-                <p className="text-white/50 text-sm font-mono">
-                  Last checked: {new Date(data.lastChecked).toLocaleString()}
-                </p>
+          <div className="flex items-start justify-between mb-8">
+            <div>
+              <h1 className="text-4xl font-bold mb-2">
+                <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                  M
+                </span>
+              </h1>
+            </div>
+            <div className="text-right">
+              <div className="text-sm text-gray-400 mb-1">
+                {formatDate(currentTime)}
               </div>
             </div>
-            {loading && (
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                className="w-8 h-8 border-2 border-cyber-blue border-t-transparent rounded-full"
-              />
-            )}
           </div>
         </motion.div>
 
-        {/* Key Metrics */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="cyber-glass p-6 rounded-2xl relative overflow-hidden group"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <TrendingUp className="w-8 h-8 text-green-400" />
-              <span className="text-3xl font-bold text-green-400">{data.uptime.toFixed(2)}%</span>
+        {/* All Systems Operational Banner */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-12 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl p-6"
+        >
+          <div className="flex items-center gap-3">
+            <CheckCircle className="w-8 h-8 text-green-500" />
+            <div>
+              <h2 className="text-2xl font-bold text-green-500">All Systems Operational</h2>
+              <p className="text-sm text-gray-400 mt-1">
+                {formatDate(currentTime)}
+              </p>
             </div>
-            <h3 className="text-white/70 font-medium mb-1">Uptime</h3>
-            <p className="text-white/40 text-sm font-mono">Last 30 days</p>
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-cyan-500"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: data.uptime / 100 }}
-              transition={{ duration: 1, delay: 0.5 }}
-            />
-          </motion.div>
+          </div>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="cyber-glass p-6 rounded-2xl relative overflow-hidden group"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <Zap className="w-8 h-8 text-cyber-blue" />
-              <span className="text-3xl font-bold text-cyber-blue">{data.responseTime}ms</span>
-            </div>
-            <h3 className="text-white/70 font-medium mb-1">Response Time</h3>
-            <p className="text-white/40 text-sm font-mono">Average latency</p>
-            <motion.div
-              className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ background: 'radial-gradient(circle at center, rgba(58, 166, 255, 0.1), transparent)' }}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="cyber-glass p-6 rounded-2xl relative overflow-hidden group"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <Clock className="w-8 h-8 text-cyber-purple" />
-              <span className="text-3xl font-bold text-cyber-purple">24/7</span>
-            </div>
-            <h3 className="text-white/70 font-medium mb-1">Monitoring</h3>
-            <p className="text-white/40 text-sm font-mono">Always online</p>
-            <motion.div
-              className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{ background: 'radial-gradient(circle at center, rgba(138, 43, 226, 0.1), transparent)' }}
-            />
-          </motion.div>
-        </div>
-
-        {/* Services Status */}
+        {/* Status History */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="cyber-glass-heavy p-8 rounded-3xl mb-8"
+          transition={{ delay: 0.1 }}
+          className="mb-12"
         >
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <Server className="w-6 h-6 text-cyber-cyan" />
-            Service Status
-          </h2>
-          <div className="space-y-4">
-            {data.services.map((service, index) => {
-              const serviceColor = getStatusColor(service.status)
-              const ServiceIcon = serviceColor.icon
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-medium text-gray-400">vinaysiddha.dev</h3>
+            <div className="text-sm">
+              <span className="text-green-500 font-bold">{overallUptime}%</span>
+              <span className="text-gray-500 ml-1">uptime</span>
+            </div>
+          </div>
+
+          {/* Uptime bars */}
+          <div className="flex gap-[2px] h-10 mb-2">
+            {history.map((day, index) => {
+              const date = new Date(day.date)
               return (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                  className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all group cursor-hover"
+                  className="flex-1 group relative cursor-pointer"
                 >
-                  <div className="flex items-center gap-4">
-                    <ServiceIcon className={`w-5 h-5 ${serviceColor.text}`} />
-                    <span className="text-white font-medium">{service.name}</span>
+                  <div
+                    className={`w-full h-full ${getStatusColor(day.uptime)} transition-opacity hover:opacity-80`}
+                  />
+                  {/* Tooltip */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                    <div className="font-medium">{date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                    <div className="text-gray-400">{day.uptime}% uptime</div>
                   </div>
-                  <div className="flex items-center gap-6">
-                    <span className="text-white/50 text-sm font-mono">{service.responseTime}ms</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${serviceColor.bg} ${serviceColor.border} ${serviceColor.text} border`}>
-                      {service.status}
-                    </span>
-                  </div>
-                </motion.div>
+                </div>
               )
             })}
           </div>
+
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>45 days ago</span>
+            <span>today</span>
+          </div>
         </motion.div>
 
-        {/* Uptime History Graph */}
+        {/* Status Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="cyber-glass-heavy p-8 rounded-3xl"
+          transition={{ delay: 0.2 }}
+          className="mb-8"
         >
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <TrendingUp className="w-6 h-6 text-green-400" />
-            30-Day Uptime History
-          </h2>
-          <div className="flex items-end gap-1 h-32">
-            {data.history.map((entry, index) => (
-              <motion.div
-                key={index}
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                transition={{ duration: 0.3, delay: 0.9 + index * 0.02 }}
-                className="flex-1 group relative cursor-hover"
-              >
-                <div
-                  className={`w-full rounded-t transition-all duration-300 ${
-                    entry.uptime >= 99.9 ? 'bg-green-500' : entry.uptime >= 99 ? 'bg-yellow-500' : 'bg-red-500'
-                  } group-hover:opacity-80`}
-                  style={{ height: `${entry.uptime}%` }}
-                />
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-cyber-dark border border-white/20 rounded text-xs font-mono text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  {new Date(entry.timestamp).toLocaleDateString()}: {entry.uptime.toFixed(2)}%
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="flex justify-between mt-4 text-xs text-white/40 font-mono">
-            <span>30 days ago</span>
-            <span>Today</span>
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold">Status</h2>
+            <div className="flex items-center gap-4 text-sm">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">Events</a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">Monitors</a>
+              <button className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
+                Get updates
+              </button>
+            </div>
           </div>
         </motion.div>
 
-        {/* API Setup Notice */}
+        {/* Incidents Timeline */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="space-y-8"
+        >
+          {incidents.map((incident) => (
+            <div key={incident.id} className="relative">
+              {/* Date */}
+              <div className="text-sm font-medium text-gray-400 mb-4">{incident.date}</div>
+
+              {/* Incident Card */}
+              <div className="bg-white/5 border border-white/10 rounded-lg p-6 hover:border-white/20 transition-colors">
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="text-lg font-medium">{incident.title}</h3>
+                  <span className="text-sm text-gray-400">{incident.updates[0].time}</span>
+                </div>
+
+                {/* Status Updates */}
+                <div className="space-y-4">
+                  {/* Resolved */}
+                  <div className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                        <CheckCircle className="w-4 h-4 text-black" />
+                      </div>
+                      {incident.updates.length > 1 && (
+                        <div className="w-px h-full bg-gray-700 mt-2" />
+                      )}
+                    </div>
+                    <div className="flex-1 pb-6">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-green-500">Resolved</span>
+                        <span className="text-sm text-gray-500">{incident.resolvedTime}</span>
+                      </div>
+                      <p className="text-sm text-gray-400">{incident.updates[0].message}</p>
+                    </div>
+                  </div>
+
+                  {/* Identified */}
+                  {incident.updates.length > 1 && (
+                    <div className="flex gap-4">
+                      <div className="flex flex-col items-center">
+                        <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
+                          <AlertTriangle className="w-4 h-4 text-black" />
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-medium text-orange-500">Identified</span>
+                          <span className="text-sm text-gray-500">{incident.identifiedTime}</span>
+                        </div>
+                        <p className="text-sm text-gray-400">{incident.updates[1].message}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* View Events History */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1 }}
-          className="mt-8 cyber-glass p-6 rounded-2xl border border-purple-500/30 bg-purple-500/5"
+          transition={{ delay: 0.4 }}
+          className="mt-8 text-center"
         >
-          <p className="text-xs text-purple-400 font-mono leading-relaxed">
-            🔧 <strong>Configure Real Monitoring:</strong> Create <code className="bg-white/10 px-2 py-1 rounded">/api/status</code> endpoint with actual uptime monitoring. Options:
-            <br />• Use UptimeRobot API (uptimerobot.com)
-            <br />• Use Pingdom API (pingdom.com)
-            <br />• Use StatusCake API (statuscake.com)
-            <br />• Build custom monitoring with Node.js + cron jobs
-          </p>
+          <button className="text-sm text-gray-400 hover:text-white transition-colors">
+            View events history
+          </button>
         </motion.div>
+
+        {/* Footer */}
+        <motion.footer
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-16 pt-8 border-t border-white/10 text-center"
+        >
+          <p className="text-sm text-gray-500">
+            powered by{' '}
+            <a
+              href="https://openstatus.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              vinaysiddha.dev
+            </a>
+          </p>
+          <p className="text-xs text-gray-600 mt-2">
+            Monitoring Region:{' '}
+            <span className="text-gray-500">Asia/Calcutta</span>
+          </p>
+        </motion.footer>
       </div>
     </main>
   )
