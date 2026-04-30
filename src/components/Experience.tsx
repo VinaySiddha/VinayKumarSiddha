@@ -30,31 +30,31 @@ function HeartbeatCard({ milestone, index, inView, iconMap }: { milestone: Miles
         delay: index * 0.1,
         ease: 'easeOut',
       }}
-      className="flex-shrink-0 w-80 lg:w-96"
+      className="flex-shrink-0 w-[85vw] sm:w-[22rem] lg:w-[26rem] snap-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-4 sm:gap-5">
         {/* Main pulsing node */}
         <motion.div
-          className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center z-10"
+          className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center z-10"
           style={{
-            background: `radial-gradient(circle, ${milestone.color}40, transparent)`,
+            background: `radial-gradient(circle, ${milestone.color}30, transparent)`,
             border: `2px solid ${milestone.color}`,
           }}
           animate={isHovered ? {
-            scale: [1, 1.15, 1],
+            scale: [1, 1.1, 1],
             boxShadow: [
-              `0 0 20px ${milestone.color}60`,
-              `0 0 35px ${milestone.color}90`,
-              `0 0 20px ${milestone.color}60`,
+              `0 0 15px ${milestone.color}50`,
+              `0 0 30px ${milestone.color}80`,
+              `0 0 15px ${milestone.color}50`,
             ],
           } : {
-            boxShadow: `0 0 15px ${milestone.color}40`,
+            boxShadow: `0 0 10px ${milestone.color}30`,
           }}
           transition={{ duration: 1.5, repeat: isHovered ? Infinity : 0 }}
         >
-          <MilestoneIcon className="w-8 h-8 lg:w-10 lg:h-10" style={{ color: milestone.color }} />
+          <MilestoneIcon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" style={{ color: milestone.color }} />
 
           {/* Pulse ring on hover */}
           {isHovered && (
@@ -63,7 +63,7 @@ function HeartbeatCard({ milestone, index, inView, iconMap }: { milestone: Miles
               style={{ border: `1px solid ${milestone.color}` }}
               initial={{ scale: 1, opacity: 0.6 }}
               animate={{
-                scale: 2,
+                scale: 1.8,
                 opacity: 0,
               }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeOut' }}
@@ -73,9 +73,9 @@ function HeartbeatCard({ milestone, index, inView, iconMap }: { milestone: Miles
 
         {/* Connecting vertical line to card */}
         <motion.div
-          className="w-px h-8 lg:h-12"
+          className="w-px h-8 sm:h-10 lg:h-14"
           style={{
-            backgroundColor: `${milestone.color}50`,
+            backgroundColor: `${milestone.color}40`,
           }}
           initial={{ scaleY: 0 }}
           animate={inView ? { scaleY: 1 } : {}}
@@ -84,24 +84,23 @@ function HeartbeatCard({ milestone, index, inView, iconMap }: { milestone: Miles
 
         {/* Content Card */}
         <motion.div
-          className="backdrop-blur-sm border rounded-xl p-5 relative overflow-hidden w-full"
+          className="backdrop-blur-md border rounded-2xl p-5 sm:p-6 relative overflow-hidden w-full"
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.4)',
-            borderColor: `${milestone.color}30`,
+            borderColor: `${milestone.color}20`,
           }}
           whileHover={{
             backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            borderColor: `${milestone.color}60`,
-            boxShadow: `0 8px 32px ${milestone.color}20`,
+            borderColor: `${milestone.color}50`,
             y: -5,
           }}
           transition={{ duration: 0.3 }}
         >
           {/* Year badge */}
           <div
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-bold mb-3"
+            className="inline-flex items-center gap-2 px-2.5 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold mb-2 sm:mb-3"
             style={{
-              backgroundColor: `${milestone.color}15`,
+              backgroundColor: `${milestone.color}10`,
               color: milestone.color,
             }}
           >
@@ -109,17 +108,17 @@ function HeartbeatCard({ milestone, index, inView, iconMap }: { milestone: Miles
           </div>
 
           {/* Role title */}
-          <h3 className="text-lg lg:text-xl font-bold text-white mb-2 leading-tight">
+          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1.5 leading-tight">
             {milestone.role}
           </h3>
 
           {/* Company */}
-          <p className="text-sm font-semibold mb-3" style={{ color: `${milestone.color}dd` }}>
+          <p className="text-sm sm:text-base font-semibold mb-3 sm:mb-4" style={{ color: `${milestone.color}cc` }}>
             {milestone.company}
           </p>
 
           {/* Description */}
-          <p className="text-xs lg:text-sm text-white/60 leading-relaxed">
+          <p className="text-xs sm:text-sm lg:text-base text-white/50 leading-relaxed">
             {milestone.description}
           </p>
         </motion.div>

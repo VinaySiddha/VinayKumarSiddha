@@ -144,50 +144,50 @@ export default function Contact() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-4 sm:mb-6 leading-tight">
             Get in
             <br />
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
               Touch
             </span>
           </h2>
-          <p className="text-white/60 text-lg">
+          <p className="text-white/60 text-base sm:text-lg">
             Let's collaborate on your next AI project
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-8 items-start">
+        <div className="grid lg:grid-cols-5 gap-10 sm:gap-12 items-start">
           {/* Contact Info - 2 columns */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-2 space-y-6"
+            className="lg:col-span-2 space-y-6 sm:space-y-8"
           >
             {/* Contact Cards */}
-            <div className="space-y-4">
+            <div className="space-y-4 sm:space-y-5">
               {contactInfo.map((info, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.02, x: 5 }}
-                  className="cyber-glass p-5 rounded-2xl flex items-center gap-4 group cursor-hover"
+                  className="cyber-glass p-4 sm:p-6 rounded-2xl flex items-center gap-4 sm:gap-5 group cursor-hover"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyber-blue/20 to-cyber-purple/20 flex items-center justify-center group-hover:shadow-neon-blue transition-all duration-300">
-                    <info.icon className="w-6 h-6 text-cyber-blue group-hover:text-cyber-cyan transition-colors" />
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-cyber-blue/20 to-cyber-purple/20 flex items-center justify-center group-hover:shadow-neon-blue transition-all duration-300 shrink-0">
+                    <info.icon className="w-5 h-5 sm:w-8 sm:h-8 text-cyber-blue group-hover:text-cyber-cyan transition-colors" />
                   </div>
                   <div>
-                    <p className="text-white/50 text-sm mb-1">{info.label}</p>
+                    <p className="text-white/50 text-xs sm:text-sm mb-1">{info.label}</p>
                     {info.href ? (
                       <a
                         href={info.href}
-                        className="text-white font-medium hover:text-cyber-blue transition-colors cursor-hover"
+                        className="text-white font-medium text-sm sm:text-base hover:text-cyber-blue transition-colors cursor-hover break-all"
                       >
                         {info.value}
                       </a>
                     ) : (
-                      <p className="text-white font-medium">{info.value}</p>
+                      <p className="text-white font-medium text-sm sm:text-base">{info.value}</p>
                     )}
                   </div>
                 </motion.div>
@@ -195,9 +195,9 @@ export default function Contact() {
             </div>
 
             {/* Social Links */}
-            <div className="cyber-glass p-6 rounded-2xl">
-              <h3 className="text-lg font-bold text-white mb-4 font-mono">Connect on Social</h3>
-              <div className="grid grid-cols-2 gap-3">
+            <div className="cyber-glass p-5 sm:p-8 rounded-2xl">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 font-mono">Connect on Social</h3>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 {socialLinks.map((social, index) => (
                   <motion.a
                     key={index}
@@ -206,10 +206,10 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 hover:border-${social.color}/50 hover:bg-${social.color}/10 transition-all duration-300 group cursor-hover`}
+                    className={`flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 sm:gap-3 px-3 py-3 sm:py-3 rounded-xl bg-white/5 border border-white/10 hover:border-${social.color}/50 hover:bg-${social.color}/10 transition-all duration-300 group cursor-hover`}
                   >
-                    <social.icon className={`w-4 h-4 text-white/60 group-hover:text-${social.color} transition-colors`} />
-                    <span className="text-sm text-white/70 group-hover:text-white transition-colors font-medium">
+                    <social.icon className={`w-5 h-5 sm:w-5 sm:h-5 text-white/60 group-hover:text-${social.color} transition-colors`} />
+                    <span className="text-xs sm:text-sm text-white/70 group-hover:text-white transition-colors font-medium text-center sm:text-left">
                       {social.name}
                     </span>
                   </motion.a>
@@ -225,19 +225,19 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="lg:col-span-3"
           >
-            <form ref={formRef} onSubmit={handleSubmit} className="cyber-glass-heavy p-8 rounded-3xl relative overflow-hidden scan-line">
+            <form ref={formRef} onSubmit={handleSubmit} className="cyber-glass-heavy p-6 sm:p-10 rounded-3xl relative overflow-hidden scan-line">
               {/* Holographic corner accents */}
-              <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyber-blue rounded-tr-3xl" 
+              <div className="absolute top-0 right-0 w-12 h-12 sm:w-16 sm:h-16 border-t-2 border-r-2 border-cyber-blue rounded-tr-3xl" 
                 style={{ boxShadow: '0 0 20px rgba(58, 166, 255, 0.5)' }} 
               />
-              <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyber-purple rounded-bl-3xl" 
+              <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 border-b-2 border-l-2 border-cyber-purple rounded-bl-3xl" 
                 style={{ boxShadow: '0 0 20px rgba(138, 43, 226, 0.5)' }} 
               />
 
-              <div className="space-y-5 relative z-10">
+              <div className="space-y-5 sm:space-y-6 relative z-10">
                 {/* Name Input */}
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-white/70 mb-2 font-mono">
+                  <label htmlFor="name" className="block text-sm sm:text-sm font-medium text-white/70 mb-1.5 font-mono">
                     Your Name
                   </label>
                   <input
@@ -247,14 +247,14 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white placeholder-white/30 focus:border-cyber-blue focus:bg-cyber-blue/5 focus:shadow-neon-blue transition-all duration-300 outline-none cursor-hover"
+                    className="w-full px-4 py-3 sm:py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white text-base sm:text-base placeholder-white/30 focus:border-cyber-blue focus:bg-cyber-blue/5 focus:shadow-neon-blue transition-all duration-300 outline-none cursor-hover"
                     placeholder="John Doe"
                   />
                 </div>
 
                 {/* Email Input */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-white/70 mb-2 font-mono">
+                  <label htmlFor="email" className="block text-sm sm:text-sm font-medium text-white/70 mb-1.5 font-mono">
                     Email Address
                   </label>
                   <input
@@ -264,14 +264,14 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white placeholder-white/30 focus:border-cyber-blue focus:bg-cyber-blue/5 focus:shadow-neon-blue transition-all duration-300 outline-none cursor-hover"
+                    className="w-full px-4 py-3 sm:py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white text-base sm:text-base placeholder-white/30 focus:border-cyber-blue focus:bg-cyber-blue/5 focus:shadow-neon-blue transition-all duration-300 outline-none cursor-hover"
                     placeholder="john@example.com"
                   />
                 </div>
 
                 {/* Subject Input */}
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-white/70 mb-2 font-mono">
+                  <label htmlFor="subject" className="block text-sm sm:text-sm font-medium text-white/70 mb-1.5 font-mono">
                     Subject
                   </label>
                   <input
@@ -281,14 +281,14 @@ export default function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white placeholder-white/30 focus:border-cyber-purple focus:bg-cyber-purple/5 focus:shadow-neon-purple transition-all duration-300 outline-none cursor-hover"
+                    className="w-full px-4 py-3 sm:py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white text-base sm:text-base placeholder-white/30 focus:border-cyber-purple focus:bg-cyber-purple/5 focus:shadow-neon-purple transition-all duration-300 outline-none cursor-hover"
                     placeholder="Project Inquiry"
                   />
                 </div>
 
                 {/* Message Textarea */}
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-white/70 mb-2 font-mono">
+                  <label htmlFor="message" className="block text-sm sm:text-sm font-medium text-white/70 mb-1.5 font-mono">
                     Message
                   </label>
                   <textarea
@@ -298,7 +298,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white placeholder-white/30 focus:border-cyber-cyan focus:bg-cyber-cyan/5 focus:shadow-neon-cyan transition-all duration-300 outline-none resize-none cursor-hover"
+                    className="w-full px-4 py-3 sm:py-3 rounded-xl bg-white/5 border-2 border-white/10 text-white text-base sm:text-base placeholder-white/30 focus:border-cyber-cyan focus:bg-cyber-cyan/5 focus:shadow-neon-cyan transition-all duration-300 outline-none resize-none cursor-hover"
                     placeholder="Tell me about your project..."
                   />
                 </div>
@@ -308,18 +308,18 @@ export default function Contact() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`flex items-center gap-2 p-4 rounded-xl ${
+                    className={`flex items-center gap-2 p-3 rounded-xl ${
                       submitStatus === 'success'
                         ? 'bg-green-500/10 border border-green-500/50 text-green-400'
                         : 'bg-red-500/10 border border-red-500/50 text-red-400'
                     }`}
                   >
                     {submitStatus === 'success' ? (
-                      <CheckCircle className="w-5 h-5" />
+                      <CheckCircle className="w-5 h-5 shrink-0" />
                     ) : (
-                      <AlertCircle className="w-5 h-5" />
+                      <AlertCircle className="w-5 h-5 shrink-0" />
                     )}
-                    <span className="text-sm font-medium">{statusMessage}</span>
+                    <span className="text-sm sm:text-sm font-medium">{statusMessage}</span>
                   </motion.div>
                 )}
 
@@ -329,7 +329,7 @@ export default function Contact() {
                   disabled={isSubmitting}
                   whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                   whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                  className={`w-full px-6 py-4 rounded-xl bg-gradient-to-r from-cyber-blue to-cyber-purple text-white font-bold text-lg relative overflow-hidden group magnetic-button cursor-hover ${
+                  className={`w-full px-6 py-4 sm:py-4 rounded-xl bg-gradient-to-r from-cyber-blue to-cyber-purple text-white font-bold text-lg sm:text-lg relative overflow-hidden group magnetic-button cursor-hover ${
                     isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                   }`}
                 >

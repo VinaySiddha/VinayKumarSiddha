@@ -38,15 +38,20 @@ const floatingTechs = [
 export default function About() {
   const [ref, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.2,
+    threshold: 0.1,
   })
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   // Achievement counters
   const [counters, setCounters] = useState({ projects: 0, clients: 0, experience: 0 })
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
     if (inView) {
       const targets = { projects: 10, clients: 3, experience: 1 }
       const duration = 2000
@@ -64,68 +69,66 @@ export default function About() {
         if (step >= steps) clearInterval(interval)
       }, duration / steps)
 
-      return () => clearInterval(interval)
+      return () => {
+        clearInterval(interval)
+        window.removeEventListener('resize', checkMobile)
+      }
     }
+    return () => window.removeEventListener('resize', checkMobile)
   }, [inView])
 
   return (
-    <section id="about" className="relative py-32 px-6 overflow-hidden">
+    <section id="about" className="relative py-24 sm:py-32 px-4 sm:px-6 overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-cyber-dark via-cyber-purple/5 to-cyber-dark" />
       <motion.div
-        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20"
+        className="absolute top-1/4 left-1/4 w-72 h-72 sm:w-96 sm:h-96 rounded-full opacity-10 sm:opacity-20"
         style={{
           background: 'radial-gradient(circle, #8A2BE2 0%, transparent 70%)',
-          filter: 'blur(100px)',
+          filter: 'blur(80px) sm:blur(100px)',
         }}
         animate={{
           scale: [1, 1.2, 1],
-          opacity: [0.2, 0.3, 0.2],
+          opacity: [0.1, 0.2, 0.1],
         }}
         transition={{ duration: 8, repeat: Infinity }}
       />
 
-      {/* Dispersed Tech Badges Throughout Section */}
-      {floatingTechs.map((tech, index) => (
+      {/* Dispersed Tech Badges - Filtered for mobile performance */}
+      {floatingTechs.filter((_, i) => !isMobile || i % 2 === 0).map((tech, index) => (
         <motion.div
           key={tech.name}
-          className="absolute cursor-hover group"
+          className="absolute cursor-pointer group z-10"
           style={{
             left: `${tech.x}%`,
             top: `${tech.y}%`,
           }}
           initial={{ opacity: 0, scale: 0 }}
           animate={{ 
-            opacity: 0.6, 
+            opacity: 0.4, 
             scale: 1,
-            y: [0, -15, 0],
+            y: [0, -10, 0],
           }}
           transition={{
-            opacity: { delay: index * 0.1, duration: 0.5 },
-            scale: { delay: index * 0.1, duration: 0.5 },
+            opacity: { delay: index * 0.05, duration: 0.5 },
+            scale: { delay: index * 0.05, duration: 0.5 },
             y: {
               duration: 4 + index * 0.3,
               repeat: Infinity,
               ease: 'easeInOut',
-              delay: index * 0.2,
             },
           }}
           whileHover={{ scale: 1.2, opacity: 1 }}
         >
           <div
-            className="w-16 h-16 rounded-xl cyber-glass border-2 flex items-center justify-center transition-all duration-300"
+            className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl cyber-glass border flex items-center justify-center transition-all duration-300"
             style={{
-              borderColor: `${tech.color}40`,
-              backgroundColor: `${tech.color}10`,
-              boxShadow: `0 0 15px ${tech.color}30`,
+              borderColor: `${tech.color}30`,
+              backgroundColor: `${tech.color}05`,
+              boxShadow: `0 0 10px ${tech.color}20`,
             }}
           >
-            <tech.Icon className="w-8 h-8" style={{ color: tech.color }} />
-          </div>
-
-          {/* Tooltip */}
-          <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-cyber-dark border border-white/20 rounded text-xs font-mono text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-            {tech.name}
+            <tech.Icon className="w-5 h-5 sm:w-8 sm:h-8" style={{ color: tech.color }} />
           </div>
         </motion.div>
       ))}
@@ -136,29 +139,28 @@ export default function About() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-20"
         >
-          <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-4 sm:mb-6 leading-tight">
             About
             <br />
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
               Me
             </span>
           </h2>
-          <p className="text-white/60 text-lg">AI Engineer crafting intelligent solutions</p>
+          <p className="text-white/50 text-base sm:text-lg">AI Engineer crafting intelligent solutions</p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
           {/* Left: Tech Arsenal Portrait */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative flex justify-center"
           >
             {/* Main Portrait Container */}
-            <div className="relative w-80 h-80">
-              {/* Rotating gradient rim */}
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80">
               <motion.div
                 className="absolute inset-0 rounded-full p-1"
                 style={{
@@ -172,11 +174,9 @@ export default function About() {
                   backgroundPosition: { duration: 5, repeat: Infinity },
                 }}
               >
-                {/* Glass portrait frame */}
-                <div className="w-full h-full rounded-full cyber-glass-heavy flex items-center justify-center text-7xl font-bold text-white relative overflow-hidden group cursor-hover">
+                <div className="w-full h-full rounded-full cyber-glass-heavy flex items-center justify-center text-5xl sm:text-7xl font-bold text-white relative overflow-hidden group">
                   <span className="relative z-10 select-none">V</span>
                   
-                  {/* Hover glow effect */}
                   <motion.div
                     className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{
@@ -184,83 +184,63 @@ export default function About() {
                     }}
                   />
 
-                  {/* Scanning line */}
                   <motion.div
-                    className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyber-blue to-transparent opacity-50"
+                    className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyber-blue to-transparent opacity-30"
                     animate={{ y: ['-100%', '200%'] }}
                     transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
                   />
                 </div>
               </motion.div>
-
             </div>
           </motion.div>
 
           {/* Right: Bio + Achievements */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-8"
+            className="space-y-8 sm:space-y-10"
           >
             {/* Bio Text */}
-            <div className="space-y-4">
-              <p className="text-white/80 text-lg leading-relaxed">
+            <div className="space-y-6 text-center lg:text-left">
+              <p className="text-white/80 text-base sm:text-lg leading-relaxed">
                 Hi, I'm <span className="highlight-keyword font-mono">Vinny</span>, an{' '}
                 <span className="text-cyber-blue font-semibold">AI Engineer</span> and{' '}
-                <span className="text-cyber-purple font-semibold">Full Stack Developer</span> passionate about building intelligent systems that solve real-world problems.
+                <span className="text-cyber-purple font-semibold">Full Stack Developer</span> passionate about building intelligent systems.
               </p>
-              <p className="text-white/70 leading-relaxed">
+              <p className="text-white/70 text-sm sm:text-base leading-relaxed">
                 I specialize in <span className="highlight-keyword font-mono">RAG systems</span>,{' '}
-                <span className="highlight-keyword font-mono">LLMs</span>,{' '}
-                <span className="highlight-keyword font-mono">multi-agent workflows</span>, and scalable cloud architectures. From designing AI-powered applications to deploying enterprise-grade solutions, I thrive on turning complex challenges into elegant, efficient code.
-              </p>
-              <p className="text-white/70 leading-relaxed">
-                When I'm not coding, you'll find me exploring the latest AI research, contributing to open-source projects, or mentoring aspiring developers.
+                <span className="highlight-keyword font-mono">LLMs</span>, and{' '}
+                <span className="highlight-keyword font-mono">multi-agent workflows</span>. I thrive on turning complex challenges into elegant, efficient code.
               </p>
             </div>
 
-            {/* Achievement Counters */}
-            <div className="grid grid-cols-3 gap-4">
-              <motion.div
-                className="cyber-glass p-4 rounded-2xl text-center group cursor-hover"
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="flex items-center justify-center mb-2">
-                  <Code2 className="w-5 h-5 text-cyber-blue mr-2" />
-                  <span className="text-3xl font-bold text-cyber-blue">{counters.projects}+</span>
-                </div>
-                <p className="text-white/60 text-sm font-medium">Projects</p>
-              </motion.div>
-
-              <motion.div
-                className="cyber-glass p-4 rounded-2xl text-center group cursor-hover"
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="flex items-center justify-center mb-2">
-                  <Users className="w-5 h-5 text-cyber-purple mr-2" />
-                  <span className="text-3xl font-bold text-cyber-purple">{counters.clients}+</span>
-                </div>
-                <p className="text-white/60 text-sm font-medium">Clients</p>
-              </motion.div>
-
-              <motion.div
-                className="cyber-glass p-4 rounded-2xl text-center group cursor-hover"
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="flex items-center justify-center mb-2">
-                  <Award className="w-5 h-5 text-cyber-cyan mr-2" />
-                  <span className="text-3xl font-bold text-cyber-cyan">{counters.experience}+</span>
-                </div>
-                <p className="text-white/60 text-sm font-medium">Years Exp</p>
-              </motion.div>
+            {/* Achievement Counters - Responsive Grid */}
+            <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                { label: 'Projects', count: counters.projects, color: 'text-cyber-blue', icon: Code2 },
+                { label: 'Clients', count: counters.clients, color: 'text-cyber-purple', icon: Users },
+                { label: 'Years Exp', count: counters.experience, color: 'text-cyber-cyan', icon: Award }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  className="cyber-glass p-4 sm:p-5 rounded-2xl text-center group"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <div className="flex items-center justify-center mb-1.5">
+                    <item.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${item.color} mr-2`} />
+                    <span className={`text-2xl sm:text-3xl font-bold ${item.color}`}>{item.count}+</span>
+                  </div>
+                  <p className="text-white/50 text-[10px] sm:text-xs font-medium uppercase tracking-wider mt-1">{item.label}</p>
+                </motion.div>
+              ))}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <motion.button
                 onClick={() => setIsModalOpen(true)}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyber-blue to-cyber-purple text-white font-semibold flex items-center gap-2 magnetic-button cursor-hover group relative overflow-hidden"
+                className="px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-cyber-blue to-cyber-purple text-white text-sm sm:text-base font-semibold flex items-center justify-center gap-2 group relative overflow-hidden w-full sm:w-auto shadow-lg shadow-cyber-blue/20"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -273,8 +253,8 @@ export default function About() {
 
               <motion.a
                 href="https://drive.google.com/file/d/1ZRv8l9RlO91aXLi-MEcsI0FU95T5iYjg/view?usp=sharing"
-                download
-                className="px-6 py-3 rounded-xl border-2 border-cyber-cyan/50 text-cyber-cyan font-semibold flex items-center gap-2 hover:bg-cyber-cyan/10 transition-all cursor-hover group"
+                target="_blank"
+                className="px-6 py-3 sm:py-4 rounded-xl border border-cyber-cyan/50 text-cyber-cyan text-sm sm:text-base font-semibold flex items-center justify-center gap-2 hover:bg-cyber-cyan/10 transition-all w-full sm:w-auto"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -285,115 +265,77 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Scrolling Text Strip */}
-        <div className="relative mt-24 overflow-hidden">
-          <div className="relative h-16 flex items-center bg-gradient-to-r from-transparent via-white/5 to-transparent">
-            <motion.div
-              className="flex whitespace-nowrap font-mono text-sm font-bold tracking-widest"
-              animate={{ x: ['0%', '-50%'] }}
-              transition={{
-                duration: 30,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-            >
-              {/* Duplicate content for seamless loop */}
-              <span className="flex items-center">
-                <span className="text-cyber-blue px-6">AI ENGINEER</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-purple px-6">RAG SYSTEMS</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-cyan px-6">LANGCHAIN</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-blue px-6">MULTI-AGENT WORKFLOWS</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-purple px-6">JAVA</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-cyan px-6">PYTHON</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-blue px-6">JAVASCRIPT</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-purple px-6">MONGODB</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-cyan px-6">DJANGO</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-blue px-6">EXPRESS JS</span>
-                <span className="text-white/40 px-2">•</span>
-                {/* Duplicate for seamless loop */}
-                <span className="text-cyber-blue px-6">AI ENGINEER</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-purple px-6">RAG SYSTEMS</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-cyan px-6">LANGCHAIN</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-blue px-6">MULTI-AGENT WORKFLOWS</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-purple px-6">JAVA</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-cyan px-6">PYTHON</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-blue px-6">JAVASCRIPT</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-purple px-6">MONGODB</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-cyan px-6">DJANGO</span>
-                <span className="text-white/40 px-2">•</span>
-                <span className="text-cyber-blue px-6">EXPRESS JS</span>
-                <span className="text-white/40 px-2">•</span>
-              </span>
-            </motion.div>
-          </div>
+        {/* Scrolling Text Strip - Optimized for performance */}
+        <div className="relative mt-20 sm:mt-24 overflow-hidden py-4">
+          <motion.div
+            className="flex whitespace-nowrap font-mono text-xs sm:text-sm font-bold tracking-widest opacity-30"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{
+              duration: 40,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          >
+            <span className="flex items-center">
+              {['AI ENGINEER', 'RAG SYSTEMS', 'LANGCHAIN', 'MULTI-AGENT WORKFLOWS', 'PYTHON', 'DJANGO', 'NEXT JS'].map((text, i) => (
+                <span key={i} className="flex items-center">
+                  <span className="text-white px-6">{text}</span>
+                  <span className="text-white/20 px-2">•</span>
+                </span>
+              ))}
+              {/* Duplicate for loop */}
+              {['AI ENGINEER', 'RAG SYSTEMS', 'LANGCHAIN', 'MULTI-AGENT WORKFLOWS', 'PYTHON', 'DJANGO', 'NEXT JS'].map((text, i) => (
+                <span key={i + 10} className="flex items-center">
+                  <span className="text-white px-6">{text}</span>
+                  <span className="text-white/20 px-2">•</span>
+                </span>
+              ))}
+            </span>
+          </motion.div>
         </div>
       </div>
 
-      {/* Tech Arsenal Modal */}
+      {/* Tech Arsenal Modal - Improved responsive grid */}
       {isModalOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-6"
+          className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 sm:p-6"
           onClick={() => setIsModalOpen(false)}
         >
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            className="cyber-glass-heavy p-8 rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-auto"
+            className="cyber-glass-heavy p-6 sm:p-8 rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-y-auto relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-3xl font-bold gradient-text-fusion mb-6">
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-white/50 hover:text-white"
+            >
+              ✕
+            </button>
+            <h3 className="text-2xl sm:text-3xl font-bold gradient-text-fusion mb-6">
               Tech <span className="highlight-keyword font-mono">Arsenal</span>
             </h3>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
               {[...orbitingTechs, ...floatingTechs].map((tech, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="cyber-glass p-4 rounded-xl flex flex-col items-center gap-3 cursor-hover group"
+                  className="cyber-glass p-3 sm:p-4 rounded-xl flex flex-col items-center gap-2 sm:gap-3 group"
                   whileHover={{ scale: 1.05 }}
                   style={{
-                    borderColor: `${tech.color}40`,
-                    backgroundColor: `${tech.color}10`,
+                    borderColor: `${tech.color}20`,
+                    backgroundColor: `${tech.color}05`,
                   }}
                 >
-                  <tech.Icon className="w-10 h-10" style={{ color: tech.color }} />
-                  <span className="text-white text-sm font-medium">{tech.name}</span>
+                  <tech.Icon className="w-8 h-8 sm:w-10 sm:h-10" style={{ color: tech.color }} />
+                  <span className="text-white text-[10px] sm:text-sm font-medium">{tech.name}</span>
                 </motion.div>
               ))}
             </div>
-
-            <motion.button
-              onClick={() => setIsModalOpen(false)}
-              className="mt-8 w-full py-3 rounded-xl bg-gradient-to-r from-cyber-blue to-cyber-purple text-white font-semibold cursor-hover"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Close
-            </motion.button>
           </motion.div>
         </motion.div>
       )}

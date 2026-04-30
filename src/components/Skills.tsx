@@ -61,19 +61,19 @@ export default function Skills() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="font-black text-white mb-4 sm:mb-6 leading-tight" style={{ fontSize: 'clamp(2.5rem, 10vw, 4.5rem)' }}>
+          <h2 className="font-black text-white mb-4 sm:mb-6 leading-tight text-4xl sm:text-5xl md:text-7xl">
             Tech
             <br />
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
               Arsenal
             </span>
           </h2>
-          <p className="text-white/60" style={{ fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)' }}>
+          <p className="text-white/60 text-base sm:text-lg">
             Technologies I work with to build exceptional products
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {categories.map((category, categoryIndex) => {
             const CategoryIcon = iconMap[category.icon]
             return (
@@ -98,11 +98,11 @@ export default function Skills() {
                 />
 
                 {/* Category Header */}
-                <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
-                  <div className={`w-10 sm:w-12 h-10 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-${category.color}/20 to-${category.color}/10 flex items-center justify-center group-hover:shadow-neon-blue transition-all duration-300`}>
-                    <CategoryIcon className={`w-5 sm:w-6 h-5 sm:h-6 text-${category.color}`} />
+                <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+                  <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-${category.color}/20 to-${category.color}/10 flex items-center justify-center group-hover:shadow-neon-blue transition-all duration-300 shrink-0`}>
+                    <CategoryIcon className={`w-5 h-5 sm:w-6 sm:h-6 text-${category.color}`} />
                   </div>
-                  <h3 className={`text-lg sm:text-xl font-bold text-${category.color} font-mono`}>
+                  <h3 className={`text-xl sm:text-xl font-bold text-${category.color} font-mono`}>
                     {category.category}
                   </h3>
                 </div>
@@ -115,10 +115,10 @@ export default function Skills() {
                       <motion.div
                         key={skillIndex}
                         whileHover={{ scale: 1.05, y: -2 }}
-                        className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white/5 border border-white/10 hover:border-cyber-blue/50 transition-all duration-300 group/skill cursor-default"
+                        className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-2 sm:px-3 sm:py-2 rounded-xl bg-white/5 border border-white/10 hover:border-cyber-blue/50 transition-all duration-300 group/skill cursor-default"
                       >
-                        <SkillIcon className="w-3.5 sm:w-4 h-3.5 sm:h-4 transition-colors flex-shrink-0" style={{ color: skill.color }} />
-                        <span className="text-[0.65rem] sm:text-xs text-white/80 font-medium truncate">
+                        <SkillIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors flex-shrink-0" style={{ color: skill.color }} />
+                        <span className="text-xs sm:text-xs text-white/80 font-medium truncate">
                           {skill.name}
                         </span>
                       </motion.div>
@@ -138,7 +138,7 @@ export default function Skills() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 1 }}
-          className="text-center mt-8 sm:mt-12 text-white/50 text-xs sm:text-sm px-4"
+          className="text-center mt-12 sm:mt-16 text-white/50 text-xs sm:text-sm px-4"
         >
           And many more tools in the <span className="highlight-keyword">AI engineering</span> ecosystem...
         </motion.p>

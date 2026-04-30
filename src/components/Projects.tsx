@@ -127,18 +127,18 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           )}
 
           {/* Content */}
-          <div className="relative z-10 p-8" style={{ transform: 'translateZ(50px)' }}>
+          <div className="relative z-10 p-6 sm:p-8" style={{ transform: 'translateZ(50px)' }}>
             {/* Index number */}
-            <div className="absolute top-4 right-4 text-6xl font-black text-white/5 leading-none">
+            <div className="absolute top-4 right-4 text-4xl sm:text-5xl font-black text-white/5 leading-none">
               {String(index + 1).padStart(2, '0')}
             </div>
 
             {/* Tech icons row */}
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
               {project.tech.slice(0, 4).map((tech, i) => (
                 <motion.div
                   key={i}
-                  className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm"
                   whileHover={{
                     scale: 1.2,
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -146,13 +146,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
-                  <tech.icon className="w-5 h-5" style={{ color: tech.color }} />
+                  <tech.icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: tech.color }} />
                 </motion.div>
               ))}
             </div>
 
             {/* Project title */}
-            <h3 className="text-3xl font-bold text-white mb-3 leading-tight">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 leading-tight pr-12">
               {project.title}
             </h3>
 
@@ -166,16 +166,16 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             />
 
             {/* Tagline */}
-            <p className="text-white/70 text-sm leading-relaxed mb-6 max-w-md">
+            <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-6 max-w-md">
               {project.tagline}
             </p>
 
             {/* Tech stack chips */}
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
               {project.tech.map((tech, i) => (
                 <motion.span
                   key={i}
-                  className="px-3 py-1 text-xs font-medium rounded-md bg-white/5 border border-white/10 text-white/80 backdrop-blur-sm"
+                  className="px-2.5 py-1 text-[10px] sm:text-xs font-medium rounded-md bg-white/5 border border-white/10 text-white/80 backdrop-blur-sm"
                   whileHover={{
                     backgroundColor: 'rgba(255, 255, 255, 0.15)',
                     scale: 1.05,
@@ -187,13 +187,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </div>
 
             {/* Action buttons */}
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               {project.demo && (
                 <motion.a
                   href={project.demo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/btn relative flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm text-white overflow-hidden"
+                  className="group/btn relative flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2.5 rounded-lg font-bold sm:font-medium text-xs sm:text-sm text-white overflow-hidden w-full sm:w-auto"
                   style={{
                     background: project.gradient,
                   }}
@@ -201,7 +201,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   whileTap={{ scale: 0.98 }}
                 >
                   <span className="relative z-10">Live Demo</span>
-                  <ArrowUpRight className="w-4 h-4 relative z-10 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                  <ArrowUpRight className="w-3.5 h-3.5 relative z-10 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                   
                   {/* Shimmer effect */}
                   <motion.div
@@ -218,11 +218,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm text-white/80 border border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:text-white transition-all"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2.5 rounded-lg font-bold sm:font-medium text-xs sm:text-sm text-white/80 border border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:text-white transition-all w-full sm:w-auto"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Github className="w-4 h-4" />
+                  <Github className="w-3.5 h-3.5" />
                   <span>Source</span>
                 </motion.a>
               )}
@@ -342,8 +342,8 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        {/* Projects grid - Asymmetric layout */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Projects grid - Simplified for mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {projects.map((project, index) => (
             <div
               key={index}
