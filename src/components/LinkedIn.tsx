@@ -39,7 +39,7 @@ export default function Social() {
   const profiles = [
     { name: 'LinkedIn', url: social.linkedin, icon: Linkedin, color: '#0A66C2', label: '@vinaysiddha' },
     { name: 'GitHub', url: social.github, icon: Github, color: '#FFFFFF', label: '@vinaysiddha' },
-    { name: 'Twitter', url: social.twitter || '#', icon: Twitter, color: '#1DA1F2', label: '@vinaysiddha' },
+    { name: 'Twitter', url: social.twitter , icon: Twitter, color: '#1DA1F2', label: '@vinaysiddha' },
   ]
 
   return (
