@@ -1,0 +1,8 @@
+{
+  "name": "vinny-portfolio",
+  "compatibility_date": "2024-05-04",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS"
+  }
+}
