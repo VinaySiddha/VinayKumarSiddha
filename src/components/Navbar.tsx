@@ -3,21 +3,30 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-const navLinks = [
+// Anchor links (home page sections)
+const anchorLinks = [
   { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
   { name: 'Projects', href: '#projects' },
   { name: 'Experience', href: '#experience' },
-  { name: 'LinkedIn', href: '#linkedin' },
   { name: 'Contact', href: '#contact' },
+]
+
+// Dedicated pages
+const pageLinks = [
+  { name: 'Social', href: '/social' },
 ]
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const { scrollY } = useScroll()
+  const pathname = usePathname()
+  const isHomePage = pathname === '/'
   
   const backgroundColor = useTransform(
     scrollY,
@@ -32,8 +41,9 @@ export default function Navbar() {
   )
 
   useEffect(() => {
+    if (!isHomePage) return
     const handleScroll = () => {
-      const sections = navLinks.map(link => link.href.substring(1))
+      const sections = anchorLinks.map(link => link.href.substring(1))
       
       for (const section of sections) {
         const element = document.getElementById(section)
@@ -49,10 +59,14 @@ export default function Navbar() {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isHomePage])
 
   const scrollToSection = (href: string) => {
     setIsOpen(false)
+    if (!isHomePage) {
+      window.location.href = `/${href}`
+      return
+    }
     const element = document.getElementById(href.substring(1))
     if (element) {
       const offsetTop = element.offsetTop - 100
@@ -93,12 +107,12 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-2">
-            {navLinks.map((link, index) => {
-              const isActive = activeSection === link.href.substring(1)
+            {anchorLinks.map((link, index) => {
+              const isActive = isHomePage && activeSection === link.href.substring(1)
               return (
                 <motion.a
                   key={link.name}
-                  href={link.href}
+                  href={isHomePage ? link.href : `/${link.href}`}
                   onClick={(e) => {
                     e.preventDefault()
                     scrollToSection(link.href)
@@ -141,6 +155,38 @@ export default function Navbar() {
                 </motion.a>
               )
             })}
+
+            {/* Page links (Social, etc.) */}
+            {pageLinks.map((link, index) => {
+              const isActive = pathname === link.href
+              return (
+                <Link key={link.name} href={link.href}>
+                  <motion.span
+                    className={`relative inline-block px-5 py-2.5 font-medium text-sm transition-all duration-300 rounded-full group cursor-pointer ${
+                      isActive
+                        ? 'text-cyber-blue font-bold'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: (anchorLinks.length + index) * 0.1 }}
+                  >
+                    {link.name}
+                    {isActive && (
+                      <motion.span
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-0.5 rounded-full"
+                        style={{
+                          background: 'linear-gradient(90deg, #3AA6FF, #8A2BE2)',
+                          boxShadow: '0 0 10px #3AA6FF, 0 0 20px #8A2BE2',
+                        }}
+                      />
+                    )}
+                  </motion.span>
+                </Link>
+              )
+            })}
           </div>
 
           {/* CTA Button */}
@@ -167,7 +213,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="relative z-10">Let's Connect</span>
+              <span className="relative z-10">Let&apos;s Connect</span>
               <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-cyber-purple to-cyber-pink opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               />
@@ -215,12 +261,12 @@ export default function Navbar() {
           pointerEvents: isOpen ? 'auto' : 'none',
         }}
       >
-        <div className="flex flex-col gap-3 p-6 pt-24">{navLinks.map((link, index) => {
-            const isActive = activeSection === link.href.substring(1)
+        <div className="flex flex-col gap-3 p-6 pt-24">{anchorLinks.map((link, index) => {
+            const isActive = isHomePage && activeSection === link.href.substring(1)
             return (
               <motion.a
                 key={link.name}
-                href={link.href}
+                href={isHomePage ? link.href : `/${link.href}`}
                 onClick={(e) => {
                   e.preventDefault()
                   scrollToSection(link.href)
@@ -253,6 +299,28 @@ export default function Navbar() {
               </motion.a>
             )
           })}
+
+          {/* Page links in mobile menu */}
+          {pageLinks.map((link, index) => {
+            const isActive = pathname === link.href
+            return (
+              <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)}>
+                <motion.span
+                  className={`relative block px-6 py-3 font-medium text-base rounded-2xl transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? 'bg-gradient-to-r from-cyber-blue/30 to-cyber-purple/30 text-cyber-blue border border-cyber-blue/50'
+                      : 'text-white/80 hover:bg-white/10 hover:text-white border border-white/10'
+                  }`}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: (anchorLinks.length + index) * 0.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {link.name}
+                </motion.span>
+              </Link>
+            )
+          })}
           
           <motion.a
             href="#contact"
@@ -267,7 +335,7 @@ export default function Navbar() {
             transition={{ delay: 0.6 }}
             whileTap={{ scale: 0.95 }}
           >
-            Let's Connect
+            Let&apos;s Connect
           </motion.a>
         </div>
       </motion.div>

@@ -10,9 +10,11 @@ import {
   SiKubernetes, SiSupabase, SiJavascript, SiExpress, SiWhatsapp, SiFlask, SiPython
 } from 'react-icons/si'
 import { useState, useRef } from 'react'
+import Link from 'next/link'
 import projectsData from '../../data/projects.json'
 
 interface Project {
+  id: number
   title: string
   tagline: string
   tech: Array<{ name: string; icon: any; color: string }>
@@ -188,28 +190,36 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              {project.demo && (
-                <motion.a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/btn relative flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2.5 rounded-lg font-bold sm:font-medium text-xs sm:text-sm text-white overflow-hidden w-full sm:w-auto"
-                  style={{
-                    background: project.gradient,
-                  }}
+              {/* View Details — links to dedicated project page */}
+              <Link href={`/projects/${project.id}`} className="w-full sm:w-auto">
+                <motion.span
+                  className="group/btn relative flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2.5 rounded-lg font-bold sm:font-medium text-xs sm:text-sm text-white overflow-hidden w-full"
+                  style={{ background: project.gradient }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="relative z-10">Live Demo</span>
+                  <span className="relative z-10">View Details</span>
                   <ArrowUpRight className="w-3.5 h-3.5 relative z-10 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                  
-                  {/* Shimmer effect */}
                   <motion.div
                     className="absolute inset-0 bg-white/20"
                     initial={{ x: '-100%', skewX: -15 }}
                     whileHover={{ x: '200%' }}
                     transition={{ duration: 0.6 }}
                   />
+                </motion.span>
+              </Link>
+
+              {project.demo && (
+                <motion.a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2.5 rounded-lg font-bold sm:font-medium text-xs sm:text-sm text-white/80 border border-white/20 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:text-white transition-all w-full sm:w-auto"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Demo</span>
                 </motion.a>
               )}
               
@@ -290,6 +300,7 @@ export default function Projects() {
 
   // Map JSON data to component-compatible format
   const projects: Project[] = projectsData.projects.map(project => ({
+    id: project.id,
     title: project.title,
     tagline: project.description,
     tech: project.tags.map(tag => ({
