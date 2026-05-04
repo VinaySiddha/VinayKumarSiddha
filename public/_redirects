@@ -1,2 +1,3 @@
 # Cloudflare Pages redirects and rewrites
-/*    /index.html   200
+# Removed catch-all to prevent infinite loop with Next.js static export
+
