@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -12,11 +13,17 @@ const ParticleBackground = () => {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Set canvas size
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
+    // Set canvas size and check mobile
     const setCanvasSize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
+      setIsMobile(window.innerWidth < 768)
     }
+    
     setCanvasSize()
     window.addEventListener('resize', setCanvasSize)
 
@@ -32,10 +39,10 @@ const ParticleBackground = () => {
       constructor() {
         this.x = Math.random() * (canvas?.width || window.innerWidth)
         this.y = Math.random() * (canvas?.height || window.innerHeight)
-        this.size = Math.random() * 2 + 0.5
-        this.speedX = Math.random() * 0.5 - 0.25
-        this.speedY = Math.random() * 0.5 - 0.25
-        this.opacity = Math.random() * 0.5 + 0.2
+        this.size = Math.random() * 1.5 + 0.5
+        this.speedX = (Math.random() * 0.4 - 0.2) * (window.innerWidth < 768 ? 0.5 : 1)
+        this.speedY = (Math.random() * 0.4 - 0.2) * (window.innerWidth < 768 ? 0.5 : 1)
+        this.opacity = Math.random() * 0.4 + 0.1
       }
 
       update() {
@@ -58,13 +65,16 @@ const ParticleBackground = () => {
       }
     }
 
-    // Create particles
+    // Create particles based on screen size
     const particlesArray: Particle[] = []
-    const numberOfParticles = 100
+    const numberOfParticles = window.innerWidth < 768 ? 35 : 80
+    const connectionDistance = window.innerWidth < 768 ? 70 : 100
 
     for (let i = 0; i < numberOfParticles; i++) {
       particlesArray.push(new Particle())
     }
+
+    let animationFrameId: number
 
     // Animation loop
     const animate = () => {
@@ -75,31 +85,32 @@ const ParticleBackground = () => {
         particle.draw()
       })
 
-      // Draw connections
-      particlesArray.forEach((a, index) => {
-        particlesArray.slice(index + 1).forEach((b) => {
-          const dx = a.x - b.x
-          const dy = a.y - b.y
+      // Draw connections - optimized loop
+      for (let i = 0; i < particlesArray.length; i++) {
+        for (let j = i + 1; j < particlesArray.length; j++) {
+          const dx = particlesArray[i].x - particlesArray[j].x
+          const dy = particlesArray[i].y - particlesArray[j].y
           const distance = Math.sqrt(dx * dx + dy * dy)
 
-          if (distance < 100) {
-            ctx.strokeStyle = `rgba(76, 201, 240, ${0.1 * (1 - distance / 100)})`
-            ctx.lineWidth = 0.5
+          if (distance < connectionDistance) {
+            ctx.strokeStyle = `rgba(76, 201, 240, ${0.08 * (1 - distance / connectionDistance)})`
+            ctx.lineWidth = 0.4
             ctx.beginPath()
-            ctx.moveTo(a.x, a.y)
-            ctx.lineTo(b.x, b.y)
+            ctx.moveTo(particlesArray[i].x, particlesArray[i].y)
+            ctx.lineTo(particlesArray[j].x, particlesArray[j].y)
             ctx.stroke()
           }
-        })
-      })
+        }
+      }
 
-      requestAnimationFrame(animate)
+      animationFrameId = requestAnimationFrame(animate)
     }
 
     animate()
 
     return () => {
       window.removeEventListener('resize', setCanvasSize)
+      cancelAnimationFrame(animationFrameId)
     }
   }, [])
 
@@ -107,7 +118,7 @@ const ParticleBackground = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.4 }}
+      style={{ opacity: 0.35 }}
     />
   )
 }
