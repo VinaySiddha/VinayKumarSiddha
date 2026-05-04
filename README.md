@@ -1,4 +1,4 @@
-# 🚀 Vinny's Ultra-Premium AI Engineer Portfolio
+# 🚀 Vinay Siddha's Ultra-Premium AI Engineer Portfolio
 
 An elite, production-ready portfolio website featuring cutting-edge animations, real-time integrations, and futuristic cyber aesthetics.
 
@@ -128,4 +128,4 @@ src/
 
 ---
 
-Built with ❤️ by Vinny | © 2025
+Built with ❤️ by Vinay Siddha | © 2025

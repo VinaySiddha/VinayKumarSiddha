@@ -5,10 +5,10 @@ import { useState, useEffect, useRef } from 'react'
 import { Terminal as TerminalIcon, Cpu, Zap, Activity } from 'lucide-react'
 
 const commands = [
-  { cmd: 'vinny --init-intelligence', output: 'INITIALIZING_NEURAL_WEIGHTS... [OK]' },
-  { cmd: 'vinny --deploy-rag', output: 'MOUNTING_VECTOR_DATABASE: PINECONE... [CONNECTED]' },
-  { cmd: 'vinny --agent-mesh', output: 'CONNECTING_MULTI_AGENT_MESH... [ESTABLISHED]' },
-  { cmd: 'vinny --status', output: 'SYSTEM_STATUS: OPTIMIZED | UPTIME: 99.9%' },
+  { cmd: 'vinay --init-intelligence', output: 'INITIALIZING_NEURAL_WEIGHTS... [OK]' },
+  { cmd: 'vinay --deploy-rag', output: 'MOUNTING_VECTOR_DATABASE: PINECONE... [CONNECTED]' },
+  { cmd: 'vinay --agent-mesh', output: 'CONNECTING_MULTI_AGENT_MESH... [ESTABLISHED]' },
+  { cmd: 'vinay --status', output: 'SYSTEM_STATUS: OPTIMIZED | UPTIME: 99.9%' },
 ]
 
 export default function ThreeDTerminal() {
@@ -102,7 +102,7 @@ export default function ThreeDTerminal() {
               <div className="h-4 w-px bg-white/10 mx-1" />
               <div className="flex items-center gap-2">
                 <TerminalIcon size={12} className="text-white/40" />
-                <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">vinny@runtime: ~</span>
+                <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">vinay@runtime: ~</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-[9px] font-mono text-cyber-blue opacity-60">

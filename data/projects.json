@@ -18,6 +18,21 @@
       "image": ""
     },
     {
+      "id": 14,
+      "title": "RAG-based PDF Answering System",
+      "description": "Built a system to answer questions based on PDF documents using embeddings and vector database retrieval, integrating OpenAI's LLM with LangChain. Applicable to intelligent helpdesk systems.",
+      "tags": [
+        { "name": "Python", "icon": "FaPython", "color": "#3776AB" },
+        { "name": "LangChain", "icon": "SiLangchain", "color": "#1C3C3C" },
+        { "name": "OpenAI", "icon": "SiOpenai", "color": "#10A37F" },
+        { "name": "Vector DB", "icon": "SiMongodb", "color": "#47A248" }
+      ],
+      "github": "https://github.com/VinaySiddha/rag-pdf-answering",
+      "demo": "",
+      "gradient": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)",
+      "image": ""
+    },
+    {
       "id": 2,
       "title": "AI Shopping Agent",
       "description": "Multi-agent product comparison system with real-time scraping from Amazon & Flipkart using CrewAI, FastAPI backend and React UI with Supabase integration.",
