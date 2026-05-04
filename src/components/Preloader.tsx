@@ -5,172 +5,83 @@ import { useState, useEffect } from 'react'
 
 export default function Preloader() {
   const [loading, setLoading] = useState(true)
+  const [percent, setPercent] = useState(0)
 
   useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 3000)
+    const interval = setInterval(() => {
+      setPercent(prev => {
+        if (prev >= 100) {
+          clearInterval(interval)
+          setTimeout(() => setLoading(false), 500)
+          return 100
+        }
+        return prev + 1
+      })
+    }, 20)
 
-    return () => clearTimeout(timer)
+    return () => clearInterval(interval)
   }, [])
 
   return (
     <AnimatePresence>
       {loading && (
         <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-cyber-dark"
+          initial={{ opacity: 1, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, filter: 'blur(20px)' }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
         >
-          {/* Animated background blobs */}
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-30"
-            style={{
-              background: 'radial-gradient(circle, #3AA6FF 0%, transparent 70%)',
-              filter: 'blur(100px)',
-            }}
-            animate={{
-              scale: [1, 1.3, 1],
-              x: [0, 50, 0],
-              y: [0, -50, 0],
-            }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full opacity-30"
-            style={{
-              background: 'radial-gradient(circle, #8A2BE2 0%, transparent 70%)',
-              filter: 'blur(100px)',
-            }}
-            animate={{
-              scale: [1, 1.3, 1],
-              x: [0, -50, 0],
-              y: [0, 50, 0],
-            }}
-            transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-          />
-
-          {/* Logo morph animation */}
-          <div className="relative z-10">
+          <div className="relative w-full max-w-sm px-10">
+            {/* The Label */}
             <motion.div
-              className="relative w-32 h-32"
-              animate={{
-                scale: [1, 1.1, 1],
-                rotate: [0, 180, 360],
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-between items-end mb-4"
             >
-              {/* Outer ring */}
-              <motion.div
-                className="absolute inset-0 rounded-full border-4 border-transparent"
-                style={{
-                  background: 'linear-gradient(45deg, #3AA6FF, #8A2BE2, #FF1B8D, #00E8F3)',
-                  backgroundClip: 'padding-box',
-                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  WebkitMaskComposite: 'xor',
-                  maskComposite: 'exclude',
-                  padding: '4px',
-                }}
-                animate={{
-                  rotate: [0, -360],
-                }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-              />
-
-              {/* Inner morphing shape */}
-              <motion.div
-                className="absolute inset-4 bg-gradient-to-br from-cyber-blue to-cyber-purple flex items-center justify-center text-4xl font-bold text-white"
-                animate={{
-                  borderRadius: [
-                    '60% 40% 30% 70% / 60% 30% 70% 40%',
-                    '30% 60% 70% 40% / 50% 60% 30% 60%',
-                    '60% 40% 30% 70% / 60% 30% 70% 40%',
-                  ],
-                }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                style={{
-                  boxShadow: '0 0 40px rgba(58, 166, 255, 0.6), 0 0 80px rgba(138, 43, 226, 0.4)',
-                }}
-              >
-                V
-              </motion.div>
-
-              {/* Orbiting particles */}
-              {[0, 120, 240].map((angle, index) => (
-                <motion.div
-                  key={index}
-                  className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-cyber-cyan"
-                  style={{
-                    transformOrigin: '0 0',
-                  }}
-                  animate={{
-                    rotate: [angle, angle + 360],
-                    scale: [1, 1.5, 1],
-                  }}
-                  transition={{
-                    rotate: { duration: 3, repeat: Infinity, ease: 'linear' },
-                    scale: { duration: 1, repeat: Infinity, ease: 'easeInOut' },
-                  }}
-                >
-                  <div
-                    className="w-full h-full rounded-full"
-                    style={{
-                      transform: `translateX(60px)`,
-                      boxShadow: '0 0 10px #00E8F3',
-                    }}
-                  />
-                </motion.div>
-              ))}
+              <span className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase">System Initialize</span>
+              <span className="text-xl font-black text-white italic">{percent}%</span>
             </motion.div>
 
-            {/* Loading text */}
+            {/* The Minimal Bar */}
+            <div className="h-[2px] w-full bg-white/5 relative overflow-hidden">
+              <motion.div 
+                className="absolute top-0 left-0 h-full bg-white"
+                initial={{ width: '0%' }}
+                animate={{ width: `${percent}%` }}
+                transition={{ duration: 0.1 }}
+              />
+            </div>
+
+            {/* Status Trace */}
             <motion.div
-              className="mt-8 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
+              className="mt-6 flex flex-col gap-1"
             >
-              <h2 className="text-2xl font-bold gradient-text-fusion mb-2">
-                Loading <span className="highlight-keyword font-mono">Experience</span>
-              </h2>
-              
-              {/* Progress bar */}
-              <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-cyan"
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: 2.5, ease: 'easeInOut' }}
-                  style={{
-                    boxShadow: '0 0 20px rgba(58, 166, 255, 0.8)',
-                  }}
-                />
-              </div>
-
-              {/* Loading dots */}
-              <div className="flex justify-center gap-2 mt-4">
-                {[0, 1, 2].map((index) => (
-                  <motion.div
-                    key={index}
-                    className="w-2 h-2 rounded-full bg-cyber-blue"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.3, 1, 0.3],
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      delay: index * 0.2,
-                    }}
-                  />
-                ))}
-              </div>
+              <span className="text-[8px] font-mono text-white/20 uppercase tracking-tighter">
+                {percent > 20 ? '> LOADING_CORE_ENGINE' : ''}
+              </span>
+              <span className="text-[8px] font-mono text-white/20 uppercase tracking-tighter">
+                {percent > 50 ? '> MOUNTING_AI_MODULES' : ''}
+              </span>
+              <span className="text-[8px] font-mono text-white/20 uppercase tracking-tighter">
+                {percent > 80 ? '> ESTABLISHING_NEURAL_LINK' : ''}
+              </span>
             </motion.div>
           </div>
+
+          {/* Background Ambient Reveal */}
+          <motion.div 
+            className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05)_0%,transparent_70%)]"
+            animate={{ 
+              opacity: [0.1, 0.3, 0.1],
+            }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
         </motion.div>
       )}
     </AnimatePresence>
   )
 }
+

@@ -1,44 +1,13 @@
-import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
-import About from '@/components/About'
-import Skills from '@/components/Skills'
-import Projects from '@/components/Projects'
-import Experience from '@/components/Experience'
-import Contact from '@/components/Contact'
-import LinkedIn from '@/components/LinkedIn'
-import MindscapeCanvas from '@/components/MindscapeCanvas'
-import Footer from '@/components/Footer'
-import BackgroundBlobs from '@/components/BackgroundBlobs'
-import ParticleBackground from '@/components/ParticleBackground'
-import Preloader from '@/components/Preloader'
-import ThemeToggle from '@/components/ThemeToggle'
+import RuntimeArchitecture from '@/components/RuntimeArchitecture'
+import SystemCore from '@/components/SystemCore'
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen">
-      {/* Preloader */}
-      <Preloader />
-      
-      {/* Theme Toggle */}
-      <ThemeToggle />
-      
-      {/* Animated background elements */}
-      <BackgroundBlobs />
-      <ParticleBackground />
-      
-      {/* Main content */}
-      <div className="relative z-10">
-        <Navbar />
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <LinkedIn />
-        <MindscapeCanvas />
-        <Contact />
-        <Footer />
-      </div>
-    </main>
+    <>
+      <Hero />
+      <RuntimeArchitecture />
+      <SystemCore />
+    </>
   )
 }

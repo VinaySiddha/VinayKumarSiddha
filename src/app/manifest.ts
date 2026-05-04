@@ -4,18 +4,18 @@ export const dynamic = 'force-static'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Vinay Siddha - AI Engineer & Developer Portfolio',
+    name: 'Vinay Siddha | AI Engineer Portfolio',
     short_name: 'Vinay Siddha',
-    description: 'Portfolio showcasing AI engineering projects, full-stack development, and creative work by Vinay Siddha',
+    description: 'Specializing in Production-Grade RAG Systems and Multi-Agent AI.',
     start_url: '/',
     display: 'standalone',
     background_color: '#000000',
-    theme_color: '#000000',
+    theme_color: '#3AA6FF',
     icons: [
       {
-        src: '/favicon.ico',
+        src: '/assets/images/logo.jpg',
         sizes: 'any',
-        type: 'image/x-icon',
+        type: 'image/jpeg',
       },
     ],
   }

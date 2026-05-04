@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
+import ClientLayout from '@/components/ClientLayout'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -18,53 +19,15 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://vinaysiddha.dev'),
-  title: 'Vinay Siddha | Portfolio | AI Engineer & Developer',
-  description: 'Portfolio of Vinay Siddha - AI Engineer and Full-Stack Developer specializing in RAG systems, Multi-Agent AI, LangChain, LLM fine-tuning, and cloud architecture. Expert in Python, Django, FastAPI, React, Next.js, Node.js, and modern web technologies. Explore projects, experience, and skills.',
+  title: {
+    default: 'Vinay Siddha | AI Engineer & Full-Stack Developer',
+    template: '%s | Vinay Siddha'
+  },
+  description: 'Specializing in Production-Grade RAG Systems, Multi-Agent AI, and Scalable Cloud Architectures. Expert in Python, FastAPI, React, and LLM Fine-tuning.',
   keywords: [
-    'Vinay Siddha portfolio',
-    'Vinay Siddha developer portfolio',
-    'Vinay Siddha ai engineer',
-    'vinay siddha',
-    'vinaysiddha',
-    'full stack developer portfolio',
-    'creative portfolio design',
-    'nextjs portfolio',
-    'tailwind portfolio ui',
-    'motion portfolio website',
-    'react developer portfolio',
-    'ai engineer website',
-    'backend developer',
-    'frontend developer',
-    'machine learning engineer',
-    'deep learning projects',
-    'rag development portfolio',
-    'langchain developer',
-    'mongodb express react node',
-    'python developer portfolio',
-    'java developer portfolio',
-    'cloud projects',
-    'personal developer website',
-    'Vinay Siddha site',
-    'Vinay Siddha resume online',
-    'modern portfolio ui',
-    'web development projects showcase',
-    'interactive web portfolio',
-    'creative web engineer',
-    'software engineer online portfolio',
-    'AI Engineer',
-    'RAG Systems',
-    'Multi-Agent Systems',
-    'LLMs',
-    'Azure AI',
-    'Django',
-    'FastAPI',
-    'Node.js',
-    'Docker',
-    'Kubernetes',
-    'AWS',
-    'Firebase',
-    'PostgreSQL',
-    'MongoDB'
+    'AI Engineer', 'RAG Systems', 'Multi-Agent AI', 'LangChain', 'LLMs', 'Azure AI', 
+    'Full-Stack Developer', 'Python Developer', 'FastAPI', 'React Developer', 
+    'Next.js Portfolio', 'Cloud Architecture', 'Machine Learning Engineer'
   ],
   authors: [{ name: 'Vinay Siddha', url: 'https://vinaysiddha.dev' }],
   creator: 'Vinay Siddha',
@@ -85,11 +48,11 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://vinaysiddha.dev',
     title: 'Vinay Siddha — AI Engineer & Developer Portfolio',
-    description: 'Projects | Experience | Skills | Creative Work. Specializing in RAG, Multi-Agent AI, LangChain, and Full-Stack Development.',
+    description: 'Expert in RAG, Multi-Agent AI, and Full-Stack Development. Explore my projects and technical innovations.',
     siteName: 'Vinay Siddha Portfolio',
     images: [
       {
-        url: '../public/assets/images/logo.jpg',
+        url: '/assets/images/logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Vinay Siddha - AI Engineer & Developer Portfolio',
@@ -99,15 +62,12 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Vinay Siddha — AI Engineer & Developer Portfolio',
-    description: 'Projects | Experience | Skills | Creative Work',
+    description: 'Innovative AI solutions and scalable web architectures.',
     creator: '@vinaysiddha',
-    images: ['../public/assets/images/logo.jpg'],
-  },
-  verification: {
-    google: 'your-google-verification-code',
+    images: ['/assets/images/logo.jpg'],
   },
   alternates: {
-    canonical: 'https://vinaysiddha.dev',
+    canonical: '/',
   },
   category: 'technology',
 }
@@ -120,15 +80,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
       <head>
-        {/* Preload critical fonts */}
-        <link
-          rel="preload"
-          href="/_next/static/media/space-grotesk.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -137,11 +88,10 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Person',
               name: 'Vinay Siddha',
-              alternateName: 'Vinay Siddha',
-              jobTitle: 'AI Engineer / Full-Stack Developer',
               url: 'https://vinaysiddha.dev',
-              image: 'https://vinaysiddha.dev/og-image.png',
-              description: 'Developer specializing in AI, LLMs, RAG, LangChain, Multi-Agent Systems & Full Stack Development',
+              image: 'https://vinaysiddha.dev/assets/images/logo.jpg',
+              description: 'AI Engineer specializing in RAG, Multi-Agent Systems, and Full-Stack Development',
+              jobTitle: 'AI Engineer',
               sameAs: [
                 'https://github.com/VinaySiddha',
                 'https://linkedin.com/in/vinaysiddha',
@@ -149,37 +99,25 @@ export default function RootLayout({
               ],
               knowsAbout: [
                 'Artificial Intelligence',
-                'Machine Learning',
                 'RAG Systems',
                 'LangChain',
                 'Multi-Agent Systems',
                 'Python',
-                'Django',
                 'FastAPI',
                 'React',
                 'Next.js',
-                'Node.js',
-                'Cloud Computing',
-                'Docker',
-                'Kubernetes',
+                'Cloud Computing'
               ],
-              alumniOf: {
-                '@type': 'CollegeOrUniversity',
-                name: 'Sri Vasavi Engineering College',
-              },
             }),
           }}
         />
-        
-        {/* Additional metadata */}
-        <meta name="language" content="English" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="theme-color" content="#000000" />
-        <link rel="canonical" href="https://vinaysiddha.dev" />
       </head>
       <body className={spaceGrotesk.className}>
-        {children}
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   )
 }
+

@@ -7,7 +7,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/_next/', '/admin/'],
+      disallow: [
+        '/api/',
+        '/_next/',
+        '/static/',
+        '/admin/',
+        '/*.json$',
+      ],
     },
     sitemap: 'https://vinaysiddha.dev/sitemap.xml',
   }
