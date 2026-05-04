@@ -6,6 +6,7 @@ import {
   Brain, Zap, Shield, Target, Rocket, Sparkles, 
   Cpu, Database, Cloud, Code2, Globe, Lock
 } from 'lucide-react'
+import projectsData from '../../data/projects.json'
 
 export default function ProductBento() {
   const [ref, inView] = useInView({
@@ -27,6 +28,8 @@ export default function ProductBento() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   }
+
+  const projectsCount = projectsData.projects.length
 
   return (
     <section className="relative py-16 px-6 bg-[#050505]" ref={ref}>
@@ -94,7 +97,7 @@ export default function ProductBento() {
             className="md:col-span-1 md:row-span-1 relative overflow-hidden rounded-2xl bg-[#0a0a0a] border border-white/5 group p-6 flex flex-col justify-center items-center text-center"
           >
             <Cpu className="w-5 h-5 text-cyber-pink mb-3 opacity-60" />
-            <span className="text-2xl font-black text-white font-mono">40+</span>
+            <span className="text-2xl font-black text-white font-mono">{projectsCount}+</span>
             <span className="text-[8px] uppercase tracking-widest text-white/20 font-mono mt-1">Modules_Linked</span>
           </motion.div>
 

@@ -4,7 +4,7 @@
 
 ### 1. ✅ BASIC SEO METADATA
 - Complete meta tags in `src/app/layout.tsx`
-- Title: "Vinny | Portfolio | AI Engineer & Developer"
+- Title: "Vinay Siddha | Portfolio | AI Engineer & Developer"
 - Comprehensive description with all relevant keywords
 - Full keyword list (40+ keywords including all required terms)
 - Author, language, and robots metadata

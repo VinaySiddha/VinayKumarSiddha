@@ -9,16 +9,16 @@ export default function Footer() {
   return (
     <footer className="relative py-24 px-6 bg-black border-t border-white/5">
       <div className="container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-12 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-12 mb-20 items-start">
           {/* Brand & Description */}
           <motion.div 
             initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="sm:col-span-2 md:col-span-2"
+            className="md:col-span-2"
           >
-            <h2 className="text-2xl font-black text-white tracking-tighter mb-6">VINNY<span className="text-cyber-blue">.</span></h2>
+            <h2 className="text-2xl font-black text-white tracking-tighter mb-6">VINAY SIDDHA<span className="text-cyber-blue">.</span></h2>
             <p className="text-white/40 max-w-xs leading-relaxed text-sm font-light">
               Engineering the next generation of intelligent systems with a focus on precision, performance, and scalability.
             </p>
@@ -66,6 +66,28 @@ export default function Footer() {
             </ul>
           </motion.div>
 
+          {/* Resources / Resume */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+          >
+            <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-[10px] opacity-60">Professional</h4>
+            <ul className="flex flex-col gap-4">
+              <li>
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all text-[10px] font-mono lowercase tracking-tighter">
+                  ./download_resume
+                </a>
+              </li>
+              <li>
+                <Link href="/about" className="text-white/40 hover:text-white transition-colors text-xs font-mono lowercase">
+                  ./full_identity
+                </Link>
+              </li>
+            </ul>
+          </motion.div>
+
           {/* Legal */}
           <motion.div
             initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
@@ -99,7 +121,7 @@ export default function Footer() {
           className="flex flex-col md:flex-row items-center justify-between pt-12 border-t border-white/5 gap-8"
         >
           <p className="text-white/20 text-[10px] font-mono tracking-widest uppercase">
-            © {currentYear} VINNY_OS. ALL_RIGHTS_RESERVED.
+            © {currentYear} VINAY SIDDHA. ALL_RIGHTS_RESERVED.
           </p>
           
           <div className="flex gap-12 text-[9px] font-mono tracking-[0.3em] text-white/10 uppercase">

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { ArrowDown } from 'lucide-react'
 import aboutData from '../../data/about.json'
+import HeroHUD from './HeroHUD'
 
 export default function Hero() {
   const [isMounted, setIsMounted] = useState(false)
@@ -12,21 +13,29 @@ export default function Hero() {
     setIsMounted(true)
   }, [])
 
-  const { name, title, description } = aboutData
+  const { name, title, description, highlights } = aboutData
 
   if (!isMounted) return null
 
   return (
     <section className="relative h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-black">
+      {/* Background HUD Elements */}
+      <HeroHUD />
+
       <div className="container mx-auto max-w-5xl z-10 flex flex-col items-center text-center">
         
         {/* Subtle Reveal Tag */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-[0.4em] mb-10"
+          className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-[0.4em] mb-10 flex gap-4"
         >
-          Engineering Intelligence
+          {highlights.map((highlight, index) => (
+            <span key={index} className="flex items-center gap-4">
+              {highlight}
+              {index < highlights.length - 1 && <span className="w-1 h-1 rounded-full bg-white/10" />}
+            </span>
+          ))}
         </motion.div>
 
         {/* Massive Name - Abstract Tech Style */}
@@ -68,7 +77,7 @@ export default function Hero() {
       </div>
 
       {/* Abstract Background - Minimal Lines */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent" />
         <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </div>

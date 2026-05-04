@@ -35,7 +35,7 @@ export default function Navbar() {
           className="text-xl font-black text-white tracking-tighter cursor-pointer flex items-center gap-1"
           whileHover={{ scale: 1.05 }}
         >
-          VINNY<span className="text-cyber-blue">.</span>
+          VINAY SIDDHA<span className="text-cyber-blue">.</span>
         </motion.div>
       </Link>
 

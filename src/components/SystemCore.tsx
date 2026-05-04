@@ -94,7 +94,7 @@ export default function SystemCore() {
           <div className="absolute inset-2 rounded-2xl border border-white/5 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:10px_10px]" />
           
           <Cpu className="w-12 h-12 text-white mb-4 z-10" />
-          <span className="text-[10px] font-mono text-white/60 tracking-widest uppercase z-10">VINNY_M1_CORE</span>
+          <span className="text-[10px] font-mono text-white/60 tracking-widest uppercase z-10">VINAY_M1_CORE</span>
           
           <div className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-cyber-blue animate-pulse shadow-[0_0_15px_#3AA6FF]" />
         </div>
