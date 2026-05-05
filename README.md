@@ -69,6 +69,9 @@ An elite, production-ready portfolio website featuring cutting-edge animations, 
 # Install dependencies
 npm install
 
+# Install Playwright browsers (for E2E tests)
+npx playwright install
+
 # Configure environment
 cp .env.example .env.local
 # Edit .env.local with your API keys
@@ -78,6 +81,16 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+## 🧪 End-to-End Tests (Playwright)
+
+```bash
+# Run E2E tests (starts the dev server automatically)
+npm run test:e2e
+
+# Open Playwright UI mode
+npm run test:e2e:ui
+```
 
 ## 🔗 API Setup Required
 
