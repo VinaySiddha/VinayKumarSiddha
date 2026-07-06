@@ -73,12 +73,12 @@ export default function Navbar() {
 
       {/* CTA - Right */}
       <div className="hidden md:block pointer-events-auto">
-        <Link href="/contact">
+        <Link href="/schedule">
           <motion.div
             className="px-6 py-2.5 bg-cyber-blue text-black text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg shadow-cyber-blue/20 cursor-pointer flex items-center gap-2 group"
             whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
           >
-            Initiate
+            Schedule
             <ArrowUpRight size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </motion.div>
         </Link>
@@ -117,9 +117,9 @@ export default function Navbar() {
                 </motion.div>
               ))}
             </div>
-            <Link href="/contact" onClick={() => setIsOpen(false)}>
-              <div className="mt-4 px-10 py-4 bg-cyber-blue text-black font-black uppercase tracking-widest rounded-full">
-                Connect
+            <Link href="/schedule" onClick={() => setIsOpen(false)}>
+              <div className="mt-4 px-10 py-4 bg-cyber-blue text-black font-black uppercase tracking-widest rounded-full font-mono text-[10px] tracking-[0.2em]">
+                Schedule
               </div>
             </Link>
             

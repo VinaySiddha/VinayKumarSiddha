@@ -8,6 +8,7 @@ export default function sitemap(): { url: string; lastModified: Date; changeFreq
 
   const routes = [
     '',
+    "/schedule",
     '/about',
     '/experience',
     '/projects',
