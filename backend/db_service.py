@@ -260,3 +260,38 @@ class DBService:
         # Sort by date descending
         results.sort(key=lambda x: x.get("created_at", ""), reverse=True)
         return results
+
+    @staticmethod
+    def save_room(room_data):
+        room_id = room_data["id"]
+        url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/rooms/{room_id}?key={api_key}"
+        doc_data = to_firestore_doc(room_data)
+        DBService._request(url, data=doc_data, method="PATCH")
+
+    @staticmethod
+    def list_rooms():
+        url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/rooms?pageSize=100&key={api_key}"
+        res = DBService._request(url)
+        if not res or "documents" not in res:
+            return []
+        results = [from_firestore_doc(doc) for doc in res["documents"]]
+        # Sort by id/name
+        results.sort(key=lambda x: x.get("id", ""))
+        return results
+
+    @staticmethod
+    def delete_room(room_id):
+        url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/rooms/{room_id}?key={api_key}"
+        DBService._request(url, method="DELETE")
+
+    @staticmethod
+    def save_trip_state(state_data):
+        url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/trip/current_trip?key={api_key}"
+        doc_data = to_firestore_doc(state_data)
+        DBService._request(url, data=doc_data, method="PATCH")
+
+    @staticmethod
+    def get_trip_state():
+        url = f"https://firestore.googleapis.com/v1/projects/{project_id}/databases/(default)/documents/trip/current_trip?key={api_key}"
+        res = DBService._request(url)
+        return from_firestore_doc(res) if res else None

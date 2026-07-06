@@ -448,7 +448,10 @@ class AccommodationRequest(BaseModel):
 
 @app.post("/api/accommodation")
 async def create_accommodation(req: AccommodationRequest):
-    expected = req.persons * 375 * req.days
+    import math
+    # Club 4 members rule: cost is 1500 per day per group of up to 4 persons
+    groups = math.ceil(req.persons / 4)
+    expected = groups * 1500 * req.days
     difference = req.paid - expected
     
     if difference == 0:
@@ -481,6 +484,113 @@ async def get_accommodation():
     try:
         logs = DBService.get_accommodation_logs()
         return logs
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+class RoomRequest(BaseModel):
+    id: str
+    name: str
+    cost: float
+    guests: List[str]
+
+@app.get("/api/rooms")
+async def get_rooms():
+    try:
+        rooms = DBService.list_rooms()
+        # If no rooms exist, initialize 7 default rooms
+        if not rooms:
+            rooms = []
+            for i in range(1, 8):
+                room_data = {
+                    "id": f"room_{i}",
+                    "name": f"Room {i}",
+                    "cost": 1500.0,
+                    "guests": [],
+                    "created_at": datetime.utcnow().isoformat() + "Z"
+                }
+                DBService.save_room(room_data)
+                rooms.append(room_data)
+        return rooms
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/rooms")
+async def save_room(req: RoomRequest):
+    room_data = {
+        "id": req.id,
+        "name": req.name,
+        "cost": req.cost,
+        "guests": req.guests,
+        "created_at": datetime.utcnow().isoformat() + "Z"
+    }
+    try:
+        DBService.save_room(room_data)
+        return room_data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/rooms/{room_id}")
+async def delete_room(room_id: str):
+    try:
+        DBService.delete_room(room_id)
+        return {"status": "success", "message": f"Room {room_id} deleted."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+class TripMember(BaseModel):
+    id: str
+    name: str
+    fri: bool
+    sat: bool
+    sun: bool
+    paid: float
+
+class TripStateRequest(BaseModel):
+    members: List[TripMember]
+    fri_rooms: int = 7
+    sat_rooms: int = 2
+    sun_rooms: int = 4
+    room_cost: float = 1500.0
+
+@app.get("/api/trip")
+async def get_trip():
+    try:
+        state = DBService.get_trip_state()
+        if not state:
+            # Return default structure with 28 guests
+            members = []
+            for i in range(1, 29):
+                members.append({
+                    "id": f"guest_{i}",
+                    "name": f"Guest {i}",
+                    "fri": True,
+                    "sat": False,
+                    "sun": False,
+                    "paid": 375.0
+                })
+            state = {
+                "members": members,
+                "fri_rooms": 7,
+                "sat_rooms": 2,
+                "sun_rooms": 4,
+                "room_cost": 1500.0
+            }
+        return state
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/trip")
+async def save_trip(req: TripStateRequest):
+    try:
+        state_data = {
+            "members": [m.dict() for m in req.members],
+            "fri_rooms": req.fri_rooms,
+            "sat_rooms": req.sat_rooms,
+            "sun_rooms": req.sun_rooms,
+            "room_cost": req.room_cost
+        }
+        DBService.save_trip_state(state_data)
+        return state_data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

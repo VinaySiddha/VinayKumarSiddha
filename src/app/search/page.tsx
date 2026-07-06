@@ -37,9 +37,11 @@ const getBackendUrl = () => {
     return process.env.NEXT_PUBLIC_BACKEND_URL
   }
   if (typeof window !== 'undefined') {
-    return `http://${window.location.hostname}:8000`
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return `http://${window.location.hostname}:8000`
+    }
   }
-  return 'http://localhost:8000'
+  return 'https://media-ai-backend-376409105264.us-central1.run.app'
 }
 
 export default function SearchPage() {
