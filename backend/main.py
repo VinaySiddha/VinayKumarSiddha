@@ -486,5 +486,6 @@ async def get_accommodation():
 
 if __name__ == "__main__":
     import uvicorn
-    # Use port 8000
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Bind dynamically to $PORT (defaults to 8000 for local runs)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
